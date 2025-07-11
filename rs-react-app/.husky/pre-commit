@@ -1,1 +1,3 @@
+cd rs-react-app
+
 npm run lint
