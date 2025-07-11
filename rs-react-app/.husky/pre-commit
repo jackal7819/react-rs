@@ -1,4 +1,2 @@
-#!/usr/bin/env sh
-set -e
-echo "Running pre-commit hook..."
+cd rs-react-app
 npm run lint
