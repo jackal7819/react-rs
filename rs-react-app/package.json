@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "prepare": "cd .. && husky rs-react-app/.husky && chmod ug+x rs-react-app/.husky*"
+    "prepare": "husky && chmod ug+x .husky/*"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
