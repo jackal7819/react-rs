@@ -1,11 +1,11 @@
 import React from 'react';
 
-import SearchBar from './components/SearchBar';
-import Loader from './components/Loader';
 import CardList from './components/CardList';
-import ErrorButton from './components/ErrorButton';
-import { Character } from './types';
+import Loader from './components/Loader';
+import SearchBar from './components/SearchBar';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { ErrorButton } from './components/ErrorButton';
+import { Character } from './types';
 
 interface AppState {
   data: Character[];
