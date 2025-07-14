@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Loader from './components/Loader';
-import SearchBar from './components/SearchBar';
+import { Loader } from './components/Loader';
+import { SearchBar } from './components/SearchBar';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorButton } from './components/ErrorButton';
 import { CardList } from './components/CardList';
@@ -49,7 +49,7 @@ export class App extends React.Component<object, AppState> {
     return (
       <ErrorBoundary>
         <div className="max-w-4xl p-4 mx-auto">
-          <SearchBar />
+          <SearchBar onSearch={this.fetchData} />
           {loading && <Loader />}
           {error ? (
             <div className="p-4 text-red-600">{error}</div>

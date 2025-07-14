@@ -1,7 +1,7 @@
-export default function Loader() {
-  return (
-    <div>
-      <h1>Loader</h1>
-    </div>
-  );
+import React from 'react';
+
+export class Loader extends React.Component {
+  render() {
+    return <div className="p-4 animate-pulse">Loading...</div>;
+  }
 }
