@@ -1,10 +1,10 @@
 import React from 'react';
 
-import CardList from './components/CardList';
 import Loader from './components/Loader';
 import SearchBar from './components/SearchBar';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorButton } from './components/ErrorButton';
+import { CardList } from './components/CardList';
 import { Character } from './types';
 
 interface AppState {
@@ -54,7 +54,7 @@ export class App extends React.Component<object, AppState> {
           {error ? (
             <div className="p-4 text-red-600">{error}</div>
           ) : (
-            <CardList />
+            <CardList data={data} />
           )}
           <ErrorButton />
         </div>
