@@ -1,18 +1,19 @@
 import React from 'react';
 
 export class ErrorButton extends React.Component {
-  throwError = () => {
-    throw new Error('Check ErrorBoundary');
-  };
+  state = { throw: false };
 
   render() {
+    if (this.state.throw) {
+      throw new Error('Checking ErrorBoundary');
+    }
     return (
       <button
         type="button"
-        className="p-2 m-4 text-white bg-red-500"
-        onClick={this.throwError}
+        className="bg-rose-500 font-medium rounded-lg text-xl px-5 py-2.5 text-center flex items-center text-black hover:bg-rose-600 duration-500 cursor-pointer w-full justify-center"
+        onClick={() => this.setState({ throw: true })}
       >
-        Error
+        Throw Error
       </button>
     );
   }

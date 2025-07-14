@@ -9,7 +9,7 @@ interface CardProps {
 export class Card extends React.Component<CardProps> {
   render() {
     return (
-      <div className="flex items-center gap-4 p-4 bg-white border rounded shadow">
+      <div className="flex items-center gap-4 p-4 bg-transparent border rounded-lg shadow">
         <img
           src={this.props.image}
           alt={this.props.name}

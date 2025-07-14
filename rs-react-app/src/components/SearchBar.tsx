@@ -27,17 +27,17 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   render() {
     return (
-      <div className="flex gap-2 p-4">
+      <div className="flex gap-2 py-4">
         <input
           placeholder="Search..."
           name="search"
-          className="w-full p-2 border"
+          className="appearance-none outline-none w-full border-2 bg-transparent focus:border-amber-500 font-medium rounded-lg text-xl px-5 py-2.5 me-2 inline-flex items-center text-white duration-500 border-slate-400"
           value={this.state.term}
           onChange={this.handleChange}
         />
         <button
           type="button"
-          className="px-4 py-2 text-white bg-blue-500"
+          className="bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer"
           onClick={this.handleSearch}
         >
           Search

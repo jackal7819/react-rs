@@ -33,7 +33,18 @@ export class App extends React.Component<object, AppState> {
 
     fetch(`https://rickandmortyapi.com/api/character/?name=${term}`)
       .then(async (res) => {
-        if (!res.ok) throw new Error(`Error: ${res.status}`);
+        if (!res.ok) {
+          let errorText = 'Something went wrong. Please try again.';
+
+          if (res.status === 404) {
+            errorText = 'No characters found. Please try another name.';
+          } else if (res.status >= 500) {
+            errorText = 'Server error. Please try again later.';
+          }
+
+          throw new Error(errorText);
+        }
+
         const json = await res.json();
         this.setState({ data: json.results, loading: false });
       })
@@ -44,20 +55,25 @@ export class App extends React.Component<object, AppState> {
 
   render() {
     const { data, loading, error } = this.state;
-    console.log(data);
 
     return (
       <ErrorBoundary>
-        <div className="max-w-4xl p-4 mx-auto">
-          <SearchBar onSearch={this.fetchData} />
-          {loading && <Loader />}
-          {error ? (
-            <div className="p-4 text-red-600">{error}</div>
-          ) : (
-            <CardList data={data} />
-          )}
-          <ErrorButton />
-        </div>
+        <main className="min-h-screen antialiased text-slate-400 bg-slate-900">
+          <div className="max-w-4xl p-4 mx-auto">
+            <SearchBar onSearch={this.fetchData} />
+            {loading && (
+              <div className="flex items-center justify-center w-full h-[50vh]">
+                <Loader />
+              </div>
+            )}
+            {error ? (
+              <div className="py-4 text-rose-500">{error}</div>
+            ) : (
+              <CardList data={data} />
+            )}
+            <ErrorButton />
+          </div>
+        </main>
       </ErrorBoundary>
     );
   }

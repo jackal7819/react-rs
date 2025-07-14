@@ -13,7 +13,7 @@ export class CardList extends React.Component<CardListProps> {
     }
 
     return (
-      <div className="grid gap-4 p-4">
+      <div className="grid gap-4 py-4">
         {this.props.data.map((item) => (
           <Card
             key={item.id}
