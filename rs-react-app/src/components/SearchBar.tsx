@@ -25,15 +25,25 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     this.props.onSearch(trimmed);
   };
 
+  handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.handleSearch();
+    }
+  };
+
   render() {
     return (
       <div className="flex gap-2 py-4">
         <input
           placeholder="Search..."
           name="search"
+          type="search"
+          aria-label="Search characters"
           className="appearance-none outline-none w-full border-2 bg-transparent focus:border-amber-500 font-medium rounded-lg text-xl px-5 py-2.5 me-2 inline-flex items-center text-white duration-500 border-slate-400"
           value={this.state.term}
           onChange={this.handleChange}
+          onKeyDown={this.handleKeyDown}
         />
         <button
           type="button"
