@@ -16,6 +16,9 @@ lerna-debug.log*
 **/.next/
 **/.turbo/
 
+# Test coverage
+**/coverage/
+
 # Local env files
 .env
 .env.*.local

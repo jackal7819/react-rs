@@ -9,7 +9,7 @@ interface CardListProps {
 export class CardList extends React.Component<CardListProps> {
   render() {
     if (!this.props.data.length) {
-      return <p className="p-4 text-gray-500">Нет результатов</p>;
+      return <p className="p-4 text-gray-500">No results</p>;
     }
 
     return (

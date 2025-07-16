@@ -1,11 +1,9 @@
 import { render, screen, cleanup } from '@testing-library/react';
 import { describe, it, expect, afterEach } from 'vitest';
-import { Card } from './Card';
+import { Card } from '../components/Card';
 
 describe('Card component', () => {
-  afterEach(() => {
-    cleanup();
-  });
+  afterEach(cleanup);
 
   it('renders name and description correctly', () => {
     render(
