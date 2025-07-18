@@ -6,6 +6,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorButton } from './components/ErrorButton';
 import { CardList } from './components/CardList';
 import { Character } from './types';
+import { fetchCharacters } from './api';
 
 interface AppState {
   data: Character[];
@@ -31,22 +32,9 @@ export class App extends React.Component<object, AppState> {
   fetchData = (term: string) => {
     this.setState({ loading: true, error: null });
 
-    fetch(`https://rickandmortyapi.com/api/character/?name=${term}`)
-      .then(async (res) => {
-        if (!res.ok) {
-          let errorText = 'Something went wrong. Please try again.';
-
-          if (res.status === 404) {
-            errorText = 'No characters found. Please try another name.';
-          } else if (res.status >= 500) {
-            errorText = 'Server error. Please try again later.';
-          }
-
-          throw new Error(errorText);
-        }
-
-        const json = await res.json();
-        this.setState({ data: json.results, loading: false });
+    fetchCharacters(term)
+      .then((results) => {
+        this.setState({ data: results, loading: false });
       })
       .catch((err: Error) => {
         this.setState({ error: err.message, loading: false });
