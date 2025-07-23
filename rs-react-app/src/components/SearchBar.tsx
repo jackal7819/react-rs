@@ -1,58 +1,53 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 interface SearchBarProps {
   onSearch: (term: string) => void;
 }
 
-interface SearchBarState {
-  term: string;
-}
+export const SearchBar = ({ onSearch }: SearchBarProps) => {
+  const [term, setTerm] = useState('');
 
-export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
-  constructor(props: SearchBarProps) {
-    super(props);
-    const savedTerm = localStorage.getItem('searchTerm') || '';
-    this.state = { term: savedTerm };
-  }
+  useEffect(() => {
+    const saved = localStorage.getItem('searchTerm') || '';
+    setTerm(saved);
+  }, []);
 
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ term: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTerm(e.target.value);
   };
 
-  handleSearch = () => {
-    const trimmed = this.state.term.trim();
+  const handleSearch = () => {
+    const trimmed = term.trim();
     localStorage.setItem('searchTerm', trimmed);
-    this.props.onSearch(trimmed);
+    onSearch(trimmed);
   };
 
-  handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      this.handleSearch();
+      handleSearch();
     }
   };
 
-  render() {
-    return (
-      <div className="flex gap-2 py-4">
-        <input
-          placeholder="Search..."
-          name="search"
-          type="search"
-          aria-label="Search characters"
-          className="appearance-none outline-none w-full border-2 bg-transparent focus:border-amber-500 font-medium rounded-lg text-xl px-5 py-2.5 me-2 inline-flex items-center text-white duration-500 border-slate-400"
-          value={this.state.term}
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
-        />
-        <button
-          type="button"
-          className="bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer"
-          onClick={this.handleSearch}
-        >
-          Search
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="flex gap-2 py-4">
+      <input
+        placeholder="Search..."
+        name="search"
+        type="search"
+        aria-label="Search characters"
+        className="appearance-none outline-none w-full border-2 bg-transparent focus:border-amber-500 font-medium rounded-lg text-xl px-5 py-2.5 me-2 inline-flex items-center text-white duration-500 border-slate-400"
+        value={term}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+      />
+      <button
+        type="button"
+        className="bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer"
+        onClick={handleSearch}
+      >
+        Search
+      </button>
+    </div>
+  );
+};
