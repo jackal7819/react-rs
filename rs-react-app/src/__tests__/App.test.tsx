@@ -92,7 +92,7 @@ describe('App component', () => {
         } as Character,
       ];
 
-      window.localStorage.setItem('searchTerm', 'Rick');
+      window.localStorage.setItem('searchTerm', JSON.stringify('Rick'));
       mockFetchCharacters.mockResolvedValueOnce(mockData);
 
       render(<App />);

@@ -1,16 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface SearchBarProps {
   onSearch: (term: string) => void;
 }
 
 export const SearchBar = ({ onSearch }: SearchBarProps) => {
-  const [term, setTerm] = useState('');
-
-  useEffect(() => {
-    const saved = localStorage.getItem('searchTerm') || '';
-    setTerm(saved);
-  }, []);
+  const [term, setTerm] = useLocalStorage('searchTerm', '');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTerm(e.target.value);
@@ -18,7 +13,7 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
 
   const handleSearch = () => {
     const trimmed = term.trim();
-    localStorage.setItem('searchTerm', trimmed);
+    setTerm(trimmed);
     onSearch(trimmed);
   };
 

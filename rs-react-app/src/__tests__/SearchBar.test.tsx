@@ -7,7 +7,7 @@ describe('SearchBar Component', () => {
     const onSearch = vi.fn();
 
     if (savedTerm !== null) {
-      localStorage.setItem('searchTerm', savedTerm);
+      localStorage.setItem('searchTerm', JSON.stringify(savedTerm));
     }
 
     render(<SearchBar onSearch={onSearch} />);
@@ -52,7 +52,7 @@ describe('SearchBar Component', () => {
     const { input, button } = setup();
     fireEvent.change(input, { target: { value: '  Rick  ' } });
     fireEvent.click(button);
-    expect(localStorage.getItem('searchTerm')).toBe('Rick');
+    expect(localStorage.getItem('searchTerm')).toBe(JSON.stringify('Rick'));
   });
 
   it('triggers search callback with correct parameters', () => {
@@ -63,16 +63,16 @@ describe('SearchBar Component', () => {
   });
 
   it('retrieves saved search term on component mount', () => {
-    localStorage.setItem('searchTerm', 'Summer');
+    localStorage.setItem('searchTerm', JSON.stringify('Summer'));
     const { input } = setup();
     expect(input.value).toBe('Summer');
   });
 
   it('overwrites existing localStorage value when new search is performed', () => {
-    localStorage.setItem('searchTerm', 'OldValue');
+    localStorage.setItem('searchTerm', JSON.stringify('OldValue'));
     const { input, button } = setup();
     fireEvent.change(input, { target: { value: 'NewValue' } });
     fireEvent.click(button);
-    expect(localStorage.getItem('searchTerm')).toBe('NewValue');
+    expect(localStorage.getItem('searchTerm')).toBe(JSON.stringify('NewValue'));
   });
 });

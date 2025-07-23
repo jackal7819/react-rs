@@ -7,11 +7,13 @@ import { ErrorButton } from './components/ErrorButton';
 import { CardList } from './components/CardList';
 import { Character } from './types';
 import { fetchCharacters } from './api';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 export const App = () => {
   const [data, setData] = useState<Character[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [term] = useLocalStorage('searchTerm', '');
 
   const fetchData = useCallback(async (term: string) => {
     setLoading(true);
@@ -32,9 +34,8 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    const savedTerm = localStorage.getItem('searchTerm') || '';
-    fetchData(savedTerm);
-  }, [fetchData]);
+    fetchData(term);
+  }, [term, fetchData]);
 
   return (
     <ErrorBoundary>
