@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 
 export const ErrorPage = () => (
-  <main className="grid min-h-screen px-8 antialiased text-slate-400 bg-slate-900 place-items-center text-primary">
+  <main className="grid min-h-screen px-8 antialiased text-slate-400 bg-slate-900 place-items-center">
     <div className="text-center">
       <p className="font-semibold text-9xl">404</p>
       <h1 className="mt-4 text-3xl font-bold tracking-tight capitalize sm:text-5xl">
