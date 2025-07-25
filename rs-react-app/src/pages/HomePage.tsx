@@ -47,7 +47,14 @@ export const HomePage = () => {
 
   return (
     <ErrorBoundary>
-      <main className="min-h-screen antialiased text-slate-400 bg-slate-900">
+      <main
+        className="min-h-screen antialiased text-slate-400 bg-slate-900"
+        onClick={() => {
+          if (detailsId) {
+            setSearchParams({ page: String(page) });
+          }
+        }}
+      >
         <div className="flex gap-4 p-4 mx-auto max-w-7xl">
           <div className="w-full">
             <SearchBar
@@ -78,7 +85,10 @@ export const HomePage = () => {
           </div>
 
           {detailsId && (
-            <div className="w-1/2 pl-4 border-l border-slate-700">
+            <div
+              className="w-1/2 pl-4 border-l border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Outlet />
             </div>
           )}

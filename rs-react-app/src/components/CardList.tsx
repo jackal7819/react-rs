@@ -14,7 +14,13 @@ export const CardList = ({ data, onCardClick }: CardListProps) => {
   return (
     <div className="grid gap-4 py-4">
       {data.map((item) => (
-        <div key={item.id} onClick={() => onCardClick?.(item.id)}>
+        <div
+          key={item.id}
+          onClick={(e) => {
+            onCardClick?.(item.id);
+            e.stopPropagation();
+          }}
+        >
           <Card
             name={item.name}
             description={`${item.status} - ${item.species}`}
