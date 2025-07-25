@@ -1,4 +1,4 @@
-import { ApiResponse } from './types';
+import { ApiResponse, Character } from './types';
 
 export const fetchCharacters = async (
   term: string,
@@ -21,5 +21,20 @@ export const fetchCharacters = async (
   }
 
   const json: ApiResponse = await res.json();
+  return json;
+};
+
+export const fetchCharacterById = async (id: number): Promise<Character> => {
+  const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+
+  if (!res.ok) {
+    let errorText = 'Failed to fetch character.';
+    if (res.status === 404) {
+      errorText = 'Character not found.';
+    }
+    throw new Error(errorText);
+  }
+
+  const json: Character = await res.json();
   return json;
 };

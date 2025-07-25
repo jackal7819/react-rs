@@ -3,7 +3,7 @@ import { NavLink } from 'react-router';
 export const Navbar = () => {
   return (
     <div className="bg-slate-400">
-      <nav className="flex items-center justify-between max-w-4xl p-4 mx-auto h-14">
+      <nav className="flex items-center justify-between p-4 mx-auto max-w-7xl h-14">
         <div className="flex gap-5">
           <NavLink
             to="/"

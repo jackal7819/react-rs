@@ -3,9 +3,11 @@ import { Navbar } from './Navbar';
 
 export const MainLayout = () => {
   return (
-    <main>
+    <div>
       <Navbar />
-      <Outlet />
-    </main>
+      <main>
+        <Outlet />
+      </main>
+    </div>
   );
 };

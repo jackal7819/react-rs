@@ -5,6 +5,16 @@ export interface Character {
   species: string;
   gender: string;
   image: string;
+  type?: string;
+  origin?: {
+    name?: string;
+    url?: string;
+  };
+  location?: {
+    name?: string;
+    url?: string;
+  };
+  episode?: string[];
 }
 
 export interface ApiResponse {

@@ -3,6 +3,7 @@ import { ErrorPage } from './pages/ErrorPage';
 import { MainLayout } from './components/MainLayout';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
+import { DetailPanel } from './components/DetailPanel';
 
 const router = createBrowserRouter([
   {
@@ -11,14 +12,21 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
+        path: '',
         element: <HomePage />,
+        children: [
+          {
+            index: true,
+            element: <DetailPanel />,
+          },
+        ],
       },
-      { path: 'about', element: <AboutPage /> },
+      {
+        path: 'about',
+        element: <AboutPage />,
+      },
     ],
   },
 ]);
 
-export const App = () => {
-  return <RouterProvider router={router} />;
-};
+export const App = () => <RouterProvider router={router} />;

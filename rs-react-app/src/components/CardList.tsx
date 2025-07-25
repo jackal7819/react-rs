@@ -3,9 +3,10 @@ import { Card } from './Card';
 
 interface CardListProps {
   data: Character[];
+  onCardClick?: (id: number) => void;
 }
 
-export const CardList = ({ data }: CardListProps) => {
+export const CardList = ({ data, onCardClick }: CardListProps) => {
   if (!data.length) {
     return <p className="p-4 text-gray-500">No results</p>;
   }
@@ -13,12 +14,13 @@ export const CardList = ({ data }: CardListProps) => {
   return (
     <div className="grid gap-4 py-4">
       {data.map((item) => (
-        <Card
-          key={item.id}
-          name={item.name}
-          description={`${item.status} - ${item.species}`}
-          image={item.image}
-        />
+        <div key={item.id} onClick={() => onCardClick?.(item.id)}>
+          <Card
+            name={item.name}
+            description={`${item.status} - ${item.species}`}
+            image={item.image}
+          />
+        </div>
       ))}
     </div>
   );
