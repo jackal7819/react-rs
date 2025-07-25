@@ -50,7 +50,12 @@ export const HomePage = () => {
       <main className="min-h-screen antialiased text-slate-400 bg-slate-900">
         <div className="flex gap-4 p-4 mx-auto max-w-7xl">
           <div className="w-full">
-            <SearchBar onSearch={() => fetchData(term, 1)} />
+            <SearchBar
+              onSearch={(term) => {
+                setSearchParams({ page: '1' });
+                fetchData(term, 1);
+              }}
+            />
             {loading ? (
               <div className="flex items-center justify-center w-full h-[50vh]">
                 <Loader />

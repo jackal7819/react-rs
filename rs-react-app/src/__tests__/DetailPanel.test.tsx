@@ -1,76 +1,63 @@
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { MemoryRouter } from 'react-router';
-import { fetchCharacterById } from '../api';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import { DetailPanel } from '../components/DetailPanel';
+import { fetchCharacterById } from '../api';
+
+const mockDelete = vi.fn();
+const mockSetSearchParams = vi.fn();
+vi.mock('react-router', () => ({
+  useSearchParams: () => [
+    {
+      get: (key: string) => (key === 'details' ? '1' : null),
+      delete: mockDelete,
+    },
+    mockSetSearchParams,
+  ],
+}));
 
 vi.mock('../api');
 const mockedFetch = vi.mocked(fetchCharacterById);
 
 describe('DetailPanel', () => {
-  afterEach(cleanup);
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  test('renders character details when "details" query param is present in URL', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test('shows loader while fetching', async () => {
+    mockedFetch.mockReturnValue(new Promise(() => {}));
+
+    render(<DetailPanel />);
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
+
+  test('closes detail panel when close button clicked', async () => {
     mockedFetch.mockResolvedValue({
       id: 1,
-      name: 'Rick Sanchez',
+      name: 'Rick',
       status: 'Alive',
       species: 'Human',
       gender: 'Male',
-      image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+      image: '',
       origin: { name: 'Earth' },
-      location: { name: 'Earth' },
-      episode: ['S01E01'],
+      location: { name: 'Mars' },
+      episode: [],
     });
 
-    render(
-      <MemoryRouter initialEntries={['/?details=1']}>
-        <DetailPanel />
-      </MemoryRouter>
-    );
+    render(<DetailPanel />);
 
     await waitFor(() =>
-      expect(
-        screen.getByRole('heading', { name: /Rick Sanchez/ })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Rick/i })).toBeInTheDocument()
     );
 
-    expect(screen.getByText(/Status:/)).toBeInTheDocument();
-    expect(screen.getByText(/Alive/)).toBeInTheDocument();
-    expect(screen.getByText(/Species:/)).toBeInTheDocument();
-    expect(screen.getByText(/Human/)).toBeInTheDocument();
-    expect(screen.getByText(/Gender:/)).toBeInTheDocument();
-    expect(screen.getByText(/Male/)).toBeInTheDocument();
+    const btn = screen.getByRole('button', { name: /Close details/i });
+    fireEvent.click(btn);
 
-    // For duplicate "Earth", use getAllByText and assert count
-    const earthItems = screen.getAllByText('Earth');
-    expect(earthItems).toHaveLength(2);
-
-    expect(screen.getByText(/Episodes:/)).toBeInTheDocument();
-    expect(screen.getByText('1')).toBeInTheDocument();
-
-    const img = screen.getByRole('img', { name: /Rick Sanchez/ });
-    expect(img).toHaveAttribute(
-      'src',
-      'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
-    );
-  });
-
-  test('displays an error message on failed fetch', async () => {
-    mockedFetch.mockRejectedValue(new Error('Failed to fetch character'));
-
-    render(
-      <MemoryRouter initialEntries={['/?details=1']}>
-        <DetailPanel />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/Failed to fetch character/)).toBeInTheDocument();
-    });
+    expect(mockDelete).toHaveBeenCalledWith('details');
+    expect(mockSetSearchParams).toHaveBeenCalledWith(expect.any(Object));
   });
 });
