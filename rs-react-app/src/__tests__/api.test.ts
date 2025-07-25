@@ -12,6 +12,7 @@ describe('fetchCharacters', () => {
 
   it('should fetch characters successfully', async () => {
     const mockData = {
+      info: { pages: 1 },
       results: [
         { id: 1, name: 'Rick Sanchez' },
         { id: 2, name: 'Morty Smith' },
@@ -25,9 +26,9 @@ describe('fetchCharacters', () => {
     } as unknown as Response);
 
     const result = await fetchCharacters('Rick');
-    expect(result).toEqual(mockData.results);
+    expect(result.results).toEqual(mockData.results);
     expect(fetch).toHaveBeenCalledWith(
-      'https://rickandmortyapi.com/api/character/?name=Rick'
+      'https://rickandmortyapi.com/api/character/?name=Rick&page=1'
     );
   });
 

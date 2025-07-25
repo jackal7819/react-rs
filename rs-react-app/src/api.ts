@@ -1,8 +1,11 @@
-import { Character } from './types';
+import { ApiResponse } from './types';
 
-export const fetchCharacters = async (term: string): Promise<Character[]> => {
+export const fetchCharacters = async (
+  term: string,
+  page: number = 1
+): Promise<ApiResponse> => {
   const res = await fetch(
-    `https://rickandmortyapi.com/api/character/?name=${term}`
+    `https://rickandmortyapi.com/api/character/?name=${term}&page=${page}`
   );
 
   if (!res.ok) {
@@ -17,6 +20,6 @@ export const fetchCharacters = async (term: string): Promise<Character[]> => {
     throw new Error(errorText);
   }
 
-  const json = await res.json();
-  return json.results;
+  const json: ApiResponse = await res.json();
+  return json;
 };
