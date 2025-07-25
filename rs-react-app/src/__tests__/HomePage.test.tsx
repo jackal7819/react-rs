@@ -70,11 +70,19 @@ describe('App component', () => {
         } as Character,
       ];
 
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       render(<App />);
 
-      expect(mockFetchCharacters).toHaveBeenCalledWith('');
+      expect(mockFetchCharacters).toHaveBeenCalledWith('', 1);
       expect(screen.getByText(/loading/i)).toBeInTheDocument();
 
       await waitFor(() => {
@@ -92,12 +100,20 @@ describe('App component', () => {
         } as Character,
       ];
 
-      window.localStorage.setItem('searchTerm', 'Rick');
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      window.localStorage.setItem('searchTerm', JSON.stringify('Rick'));
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       render(<App />);
 
-      expect(mockFetchCharacters).toHaveBeenCalledWith('Rick');
+      expect(mockFetchCharacters).toHaveBeenCalledWith('Rick', 1);
 
       await waitFor(() => {
         expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
@@ -114,7 +130,15 @@ describe('App component', () => {
         } as Character,
       ];
 
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       render(<App />);
 
@@ -127,11 +151,19 @@ describe('App component', () => {
 
     it('handles empty search term correctly', async () => {
       const mockData: Character[] = [];
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       render(<App />);
 
-      expect(mockFetchCharacters).toHaveBeenCalledWith('');
+      expect(mockFetchCharacters).toHaveBeenCalledWith('', 1);
 
       await waitFor(() => {
         expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
@@ -142,11 +174,19 @@ describe('App component', () => {
   describe('API Integration Tests', () => {
     it('calls API with correct parameters', async () => {
       const mockData: Character[] = [];
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       render(<App />);
 
-      expect(mockFetchCharacters).toHaveBeenCalledWith('');
+      expect(mockFetchCharacters).toHaveBeenCalledWith('', 1);
 
       const searchData: Character[] = [
         {
@@ -156,7 +196,15 @@ describe('App component', () => {
           species: 'Human',
         } as Character,
       ];
-      mockFetchCharacters.mockResolvedValueOnce(searchData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: searchData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       const input = getSearchInput();
       const user = userEvent.setup();
@@ -166,8 +214,10 @@ describe('App component', () => {
       await user.keyboard('{Enter}');
 
       await waitFor(() => {
-        expect(mockFetchCharacters).toHaveBeenCalledWith('Rick');
+        expect(mockFetchCharacters).toHaveBeenCalledWith('Rick', 1);
       });
+
+      expect(mockFetchCharacters).toHaveBeenCalledTimes(2);
     });
 
     it('handles successful API responses', async () => {
@@ -186,7 +236,15 @@ describe('App component', () => {
         } as Character,
       ];
 
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       render(<App />);
 
@@ -221,7 +279,15 @@ describe('App component', () => {
         } as Character,
       ];
 
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       render(<App />);
 
@@ -242,8 +308,24 @@ describe('App component', () => {
       ];
 
       mockFetchCharacters
-        .mockResolvedValueOnce(initialData)
-        .mockResolvedValueOnce(searchData);
+        .mockResolvedValueOnce({
+          results: initialData,
+          info: {
+            count: 1,
+            pages: 1,
+            next: null,
+            prev: null,
+          },
+        })
+        .mockResolvedValueOnce({
+          results: searchData,
+          info: {
+            count: 1,
+            pages: 1,
+            next: null,
+            prev: null,
+          },
+        });
 
       render(<App />);
 
@@ -255,7 +337,7 @@ describe('App component', () => {
       await user.keyboard('{Enter}');
 
       await waitFor(() => {
-        expect(mockFetchCharacters).toHaveBeenCalledWith('Jerry');
+        expect(mockFetchCharacters).toHaveBeenCalledWith('Jerry', 1);
       });
 
       await waitFor(() => {
@@ -281,7 +363,15 @@ describe('App component', () => {
         } as Character,
       ];
 
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       const input = getSearchInput();
       const user = userEvent.setup();
@@ -308,7 +398,15 @@ describe('App component', () => {
         } as Character,
       ];
 
-      mockFetchCharacters.mockResolvedValueOnce(mockData);
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
       render(<App />);
 
@@ -352,8 +450,24 @@ describe('App component', () => {
       ];
 
       mockFetchCharacters
-        .mockResolvedValueOnce(firstData)
-        .mockResolvedValueOnce(secondData);
+        .mockResolvedValueOnce({
+          results: firstData,
+          info: {
+            count: 1,
+            pages: 1,
+            next: null,
+            prev: null,
+          },
+        })
+        .mockResolvedValueOnce({
+          results: secondData,
+          info: {
+            count: 1,
+            pages: 1,
+            next: null,
+            prev: null,
+          },
+        });
 
       render(<App />);
 

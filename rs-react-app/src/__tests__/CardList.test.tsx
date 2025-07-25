@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, fireEvent } from '@testing-library/react';
 import { CardList } from '../components/CardList';
 import { Character } from '../types';
 
@@ -65,5 +65,17 @@ describe('CardList Component', () => {
 
     render(<CardList data={brokenData} />);
     expect(screen.getByText('undefined - undefined')).toBeInTheDocument();
+  });
+
+  it('calls onCardClick handler with correct id when a card is clicked', () => {
+    const onCardClick = vi.fn();
+    render(<CardList data={mockData} onCardClick={onCardClick} />);
+    const cardDivs = screen
+      .getAllByRole('heading', { level: 2 })
+      .map((heading) => heading.parentElement?.parentElement);
+    if (cardDivs[0]) {
+      fireEvent.click(cardDivs[0]);
+      expect(onCardClick).toHaveBeenCalledWith(mockData[0].id);
+    }
   });
 });
