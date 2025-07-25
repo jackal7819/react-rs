@@ -8,7 +8,7 @@ import {
   MockedFunction,
 } from 'vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { fetchCharacters } from '../api';
 import { Character } from '../types';
@@ -42,15 +42,15 @@ describe('App component', () => {
     typeof fetchCharacters
   >;
 
-  // const getSearchInput = () => {
-  //   return (
-  //     screen.getByPlaceholderText(/search/i) ||
-  //     screen.getByRole('textbox') ||
-  //     screen.getByLabelText(/search/i) ||
-  //     screen.getByDisplayValue('') ||
-  //     (document.querySelector('input[type="text"]') as HTMLInputElement)
-  //   );
-  // };
+  const getSearchInput = () => {
+    return (
+      screen.getByPlaceholderText(/search/i) ||
+      screen.getByRole('textbox') ||
+      screen.getByLabelText(/search/i) ||
+      screen.getByDisplayValue('') ||
+      (document.querySelector('input[type="text"]') as HTMLInputElement)
+    );
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -385,108 +385,108 @@ describe('App component', () => {
   //   });
   // });
 
-  // describe('Mocked API Calls', () => {
-  //   it('uses vi.mock to mock API calls for success scenario', async () => {
-  //     const mockData: Character[] = [
-  //       {
-  //         id: 1,
-  //         name: 'Evil Morty',
-  //         status: 'Alive',
-  //         species: 'Human',
-  //       } as Character,
-  //     ];
+  describe('Mocked API Calls', () => {
+    it('uses vi.mock to mock API calls for success scenario', async () => {
+      const mockData: Character[] = [
+        {
+          id: 1,
+          name: 'Evil Morty',
+          status: 'Alive',
+          species: 'Human',
+        } as Character,
+      ];
 
-  //     mockFetchCharacters.mockResolvedValueOnce({
-  //       results: mockData,
-  //       info: {
-  //         count: 1,
-  //         pages: 1,
-  //         next: null,
-  //         prev: null,
-  //       },
-  //     });
+      mockFetchCharacters.mockResolvedValueOnce({
+        results: mockData,
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+      });
 
-  //     render(<App />);
+      render(<App />);
 
-  //     expect(mockFetchCharacters).toHaveBeenCalled();
+      expect(mockFetchCharacters).toHaveBeenCalled();
 
-  //     await waitFor(() => {
-  //       expect(screen.getByText(/Evil Morty/i)).toBeInTheDocument();
-  //     });
-  //   });
+      await waitFor(() => {
+        expect(screen.getByText(/Evil Morty/i)).toBeInTheDocument();
+      });
+    });
 
-  //   it('uses vi.mock to mock API calls for error scenario', async () => {
-  //     const errorMessage = 'API is down';
-  //     mockFetchCharacters.mockRejectedValueOnce(new Error(errorMessage));
+    it('uses vi.mock to mock API calls for error scenario', async () => {
+      const errorMessage = 'API is down';
+      mockFetchCharacters.mockRejectedValueOnce(new Error(errorMessage));
 
-  //     render(<App />);
+      render(<App />);
 
-  //     expect(mockFetchCharacters).toHaveBeenCalled();
+      expect(mockFetchCharacters).toHaveBeenCalled();
 
-  //     await waitFor(() => {
-  //       expect(screen.getByText(errorMessage)).toBeInTheDocument();
-  //     });
-  //   });
+      await waitFor(() => {
+        expect(screen.getByText(errorMessage)).toBeInTheDocument();
+      });
+    });
 
-  //   it('handles multiple API calls with different responses', async () => {
-  //     const firstData: Character[] = [
-  //       {
-  //         id: 1,
-  //         name: 'Pickle Rick',
-  //         status: 'Alive',
-  //         species: 'Pickle',
-  //       } as Character,
-  //     ];
+    it('handles multiple API calls with different responses', async () => {
+      const firstData: Character[] = [
+        {
+          id: 1,
+          name: 'Pickle Rick',
+          status: 'Alive',
+          species: 'Pickle',
+        } as Character,
+      ];
 
-  //     const secondData: Character[] = [
-  //       {
-  //         id: 2,
-  //         name: 'Squanch',
-  //         status: 'Alive',
-  //         species: 'Squanch',
-  //       } as Character,
-  //     ];
+      const secondData: Character[] = [
+        {
+          id: 2,
+          name: 'Squanch',
+          status: 'Alive',
+          species: 'Squanch',
+        } as Character,
+      ];
 
-  //     mockFetchCharacters
-  //       .mockResolvedValueOnce({
-  //         results: firstData,
-  //         info: {
-  //           count: 1,
-  //           pages: 1,
-  //           next: null,
-  //           prev: null,
-  //         },
-  //       })
-  //       .mockResolvedValueOnce({
-  //         results: secondData,
-  //         info: {
-  //           count: 1,
-  //           pages: 1,
-  //           next: null,
-  //           prev: null,
-  //         },
-  //       });
+      mockFetchCharacters
+        .mockResolvedValueOnce({
+          results: firstData,
+          info: {
+            count: 1,
+            pages: 1,
+            next: null,
+            prev: null,
+          },
+        })
+        .mockResolvedValueOnce({
+          results: secondData,
+          info: {
+            count: 1,
+            pages: 1,
+            next: null,
+            prev: null,
+          },
+        });
 
-  //     render(<App />);
+      render(<App />);
 
-  //     await waitFor(() => {
-  //       expect(screen.getByText(/Pickle Rick/i)).toBeInTheDocument();
-  //     });
+      await waitFor(() => {
+        expect(screen.getByText(/Pickle Rick/i)).toBeInTheDocument();
+      });
 
-  //     const input = getSearchInput();
-  //     const user = userEvent.setup();
+      const input = getSearchInput();
+      const user = userEvent.setup();
 
-  //     await user.clear(input);
-  //     await user.type(input, 'Squanch');
-  //     await user.keyboard('{Enter}');
+      await user.clear(input);
+      await user.type(input, 'Squanch');
+      await user.keyboard('{Enter}');
 
-  //     await waitFor(() => {
-  //       expect(
-  //         screen.getByRole('heading', { name: /Squanch/i })
-  //       ).toBeInTheDocument();
-  //     });
+      await waitFor(() => {
+        expect(
+          screen.getByRole('heading', { name: /Squanch/i })
+        ).toBeInTheDocument();
+      });
 
-  //     expect(mockFetchCharacters).toHaveBeenCalledTimes(2);
-  //   });
-  // });
+      expect(mockFetchCharacters).toHaveBeenCalledTimes(2);
+    });
+  });
 });
