@@ -22,6 +22,7 @@ export const CardList = ({ data, onCardClick }: CardListProps) => {
           }}
         >
           <Card
+            id={item.id}
             name={item.name}
             description={`${item.status} - ${item.species}`}
             image={item.image}

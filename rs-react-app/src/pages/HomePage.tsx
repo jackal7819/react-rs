@@ -9,7 +9,6 @@ import { SearchBar } from '../components/SearchBar';
 import { Loader } from '../components/Loader';
 import { CardList } from '../components/CardList';
 import { PaginationContainer } from '../components/PaginationContainer';
-import { ErrorButton } from '../components/ErrorButton';
 
 export const HomePage = () => {
   const [data, setData] = useState<Character[]>([]);
@@ -81,7 +80,6 @@ export const HomePage = () => {
                 />
               </>
             )}
-            <ErrorButton />
           </div>
 
           {detailsId && (
