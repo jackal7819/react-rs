@@ -9,7 +9,7 @@ import { SearchBar } from '../components/SearchBar';
 import { Loader } from '../components/Loader';
 import { CardList } from '../components/CardList';
 import { PaginationContainer } from '../components/PaginationContainer';
-import { ErrorButton } from '../components/ErrorButton';
+import { Flyout } from '../components/Flyout';
 
 export const HomePage = () => {
   const [data, setData] = useState<Character[]>([]);
@@ -48,7 +48,7 @@ export const HomePage = () => {
   return (
     <ErrorBoundary>
       <main
-        className="min-h-screen antialiased text-slate-400 bg-slate-900"
+        className="min-h-screen antialiased bg-slate-200 dark:text-slate-400 dark:bg-slate-900 text-slate-700"
         onClick={() => {
           if (detailsId) {
             setSearchParams({ page: String(page) });
@@ -72,6 +72,7 @@ export const HomePage = () => {
             ) : (
               <>
                 <CardList data={data} onCardClick={handleCardClick} />
+                <Flyout />
                 <PaginationContainer
                   currentPage={page}
                   pageCount={pageCount}
@@ -81,7 +82,6 @@ export const HomePage = () => {
                 />
               </>
             )}
-            <ErrorButton />
           </div>
 
           {detailsId && (

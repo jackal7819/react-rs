@@ -1,6 +1,9 @@
 import { NavLink } from 'react-router';
+import { useTheme } from '../hooks/useTheme';
 
 export const Navbar = () => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className="bg-slate-400">
       <nav className="flex items-center justify-between p-4 mx-auto max-w-7xl h-14">
@@ -18,7 +21,14 @@ export const Navbar = () => {
             About
           </NavLink>
         </div>
-        <div className="flex">
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="inline-flex items-center px-2 py-1.5 text-xl text-center text-black duration-500 bg-white rounded-lg cursor-pointer hover:text-amber-600 font-semibold"
+          >
+            {theme === 'light' ? 'Dark' : 'Light'} Mode
+          </button>
           <a
             href="https://rs.school/"
             target="_blank"

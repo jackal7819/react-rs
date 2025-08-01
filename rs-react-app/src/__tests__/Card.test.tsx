@@ -5,27 +5,33 @@ import { Card } from '../components/Card';
 describe('Card component', () => {
   afterEach(cleanup);
 
-  it('renders name and description correctly', () => {
+  it('renders all fields and image correctly', () => {
     render(
-      <Card name="Test Name" description="Test Description" image="test.png" />
+      <Card
+        id={1}
+        name="Test Name"
+        status="Alive"
+        species="Human"
+        gender="Male"
+        image="test.png"
+      />
     );
 
     expect(screen.getByText('Test Name')).toBeInTheDocument();
-    expect(screen.getByText('Test Description')).toBeInTheDocument();
+    expect(screen.getByText('Alive')).toBeInTheDocument();
+    expect(screen.getByText('Human - Male')).toBeInTheDocument();
     expect(screen.getByRole('img')).toHaveAttribute('src', 'test.png');
   });
 
-  it('handles missing props gracefully', () => {
-    render(<Card />);
+  it('renders empty fields gracefully', () => {
+    render(<Card id={2} name="" status="" species="" gender="" />);
 
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
-    expect(screen.queryByText(/Test Name/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Test Description/)).not.toBeInTheDocument();
 
-    const heading = screen.getByRole('heading', { level: 2 });
-    const paragraph = screen.getByText('', { selector: 'p' });
+    const headings = screen.getAllByRole('heading', { level: 2 });
+    headings.forEach((h) => expect(h.textContent).toBe('Unknown'));
 
-    expect(heading.textContent).toBe('');
-    expect(paragraph.textContent).toBe('');
+    const paragraphs = screen.getAllByText('Unknown', { selector: 'p' });
+    paragraphs.forEach((p) => expect(p.textContent).toBe('Unknown'));
   });
 });
