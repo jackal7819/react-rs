@@ -4,10 +4,21 @@ import { CardList } from '../components/CardList';
 import { Character } from '../types';
 
 vi.mock('../components/Card', () => ({
-  Card: ({ name, description }: { name: string; description: string }) => (
+  Card: ({
+    name,
+    status,
+    species,
+    gender,
+  }: {
+    name: string;
+    status: string;
+    species: string;
+    gender: string;
+  }) => (
     <div>
-      <h2>{name}</h2>
-      <p>{description}</p>
+      <h2>{name || 'Unknown'}</h2>
+      <p>{status || 'Unknown'}</p>
+      <p>{`${species || 'Unknown'} - ${gender || 'Unknown'}`}</p>
     </div>
   ),
 }));
@@ -15,6 +26,8 @@ vi.mock('../components/Card', () => ({
 afterEach(cleanup);
 
 describe('CardList Component', () => {
+  afterEach(cleanup);
+
   const mockData: Character[] = [
     {
       id: 1,
@@ -44,11 +57,12 @@ describe('CardList Component', () => {
     expect(screen.getByText('No results')).toBeInTheDocument();
   });
 
-  it('correctly displays item names and descriptions', () => {
+  it('correctly displays item names, status, species and gender', () => {
     render(<CardList data={mockData} />);
-    expect(screen.getAllByText('Rick Sanchez')).toHaveLength(1);
-    expect(screen.getAllByText('Morty Smith')).toHaveLength(1);
-    expect(screen.getAllByText('Alive - Human')).toHaveLength(2);
+    expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
+    expect(screen.getByText('Morty Smith')).toBeInTheDocument();
+    expect(screen.getAllByText('Alive')).toHaveLength(2);
+    expect(screen.getAllByText('Human - Male')).toHaveLength(2);
   });
 
   it('handles missing or undefined data gracefully', () => {
@@ -64,7 +78,8 @@ describe('CardList Component', () => {
     ] as unknown as Character[];
 
     render(<CardList data={brokenData} />);
-    expect(screen.getByText('undefined - undefined')).toBeInTheDocument();
+    expect(screen.getAllByText('Unknown')[0]).toBeInTheDocument();
+    expect(screen.getByText('Unknown - Unknown')).toBeInTheDocument();
   });
 
   it('calls onCardClick handler with correct id when a card is clicked', () => {

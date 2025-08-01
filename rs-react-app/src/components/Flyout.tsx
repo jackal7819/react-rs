@@ -1,18 +1,18 @@
 import { useSelectedItemsStore } from '../store/selectedItemsStore';
-import { useState } from 'react';
 
 export const Flyout = () => {
   const { selectedItems, unselectAll } = useSelectedItemsStore();
-  const [csvUrl, setCsvUrl] = useState<string | null>(null);
 
   if (selectedItems.length === 0) return null;
 
-  const generateCSV = () => {
-    const headers = ['Name', 'Description', 'URL'];
+  const handleDownload = () => {
+    const headers = ['ID', 'Name', 'Status', 'Species', 'Gender'];
     const rows = selectedItems.map((item) => [
+      item.id,
       item.name,
-      item.description,
-      item.url,
+      item.status,
+      item.species,
+      item.gender,
     ]);
     const csvContent = [
       headers.join(','),
@@ -21,23 +21,31 @@ export const Flyout = () => {
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-    setCsvUrl(url);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${selectedItems.length}_items.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <p>{selectedItems.length} items are selected</p>
-      <button type="button" onClick={unselectAll}>
+    <div className="sticky bottom-0 flex flex-wrap items-center gap-4 px-4 py-2 rounded-lg bg-amber-100">
+      <p className="uppercase">{selectedItems.length} items are selected</p>
+      <button
+        type="button"
+        onClick={unselectAll}
+        className="bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer"
+      >
         Unselect all
       </button>
-      <button type="button" onClick={generateCSV}>
-        Generate CSV
+      <button
+        type="button"
+        onClick={handleDownload}
+        className="bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer"
+      >
+        Download
       </button>
-      {csvUrl && (
-        <a href={csvUrl} download={`${selectedItems.length}_items.csv`}>
-          Download CSV
-        </a>
-      )}
     </div>
   );
 };

@@ -3,11 +3,20 @@ import { useSelectedItemsStore } from '../store/selectedItemsStore';
 interface CardProps {
   id: number;
   name: string;
-  description: string;
+  status: string;
+  species: string;
+  gender: string;
   image?: string;
 }
 
-export const Card = ({ id, name, description, image }: CardProps) => {
+export const Card = ({
+  id,
+  name,
+  status,
+  species,
+  gender,
+  image,
+}: CardProps) => {
   const { selectedItems, toggleItem } = useSelectedItemsStore();
   const isSelected = selectedItems.some((i) => i.id === id);
 
@@ -15,8 +24,9 @@ export const Card = ({ id, name, description, image }: CardProps) => {
     toggleItem({
       id,
       name,
-      description,
-      url: '',
+      status,
+      species,
+      gender,
     });
   };
 
@@ -27,8 +37,11 @@ export const Card = ({ id, name, description, image }: CardProps) => {
       )}
 
       <div>
-        <h2 className="text-lg font-bold">{name}</h2>
-        <p className="text-sm">{description}</p>
+        <h2 className="text-lg font-bold">{name || 'Unknown'}</h2>
+        <p className="text-sm">{status || 'Unknown'}</p>
+        <p className="text-sm">
+          {species || 'Unknown'} - {gender || 'Unknown'}
+        </p>
       </div>
       <div>
         <label htmlFor={`checkbox-${id}`} className="sr-only">

@@ -3,8 +3,9 @@ import { create } from 'zustand';
 interface Item {
   id: number;
   name: string;
-  description: string;
-  url: string;
+  status: string;
+  species: string;
+  gender: string;
 }
 
 interface SelectedItemsState {
