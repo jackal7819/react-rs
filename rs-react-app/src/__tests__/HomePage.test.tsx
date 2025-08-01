@@ -12,6 +12,7 @@ import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { fetchCharacters } from '../api';
 import { Character } from '../types';
+import { ThemeProviderWrapper } from '../components/ThemeProviderWrapper';
 
 vi.mock('../api');
 
@@ -36,6 +37,9 @@ const localStorageMock = (() => {
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
+
+const customRender = (ui: React.ReactElement, options = {}) =>
+  render(ui, { wrapper: ThemeProviderWrapper, ...options });
 
 describe('App component', () => {
   const mockFetchCharacters = fetchCharacters as MockedFunction<
@@ -80,7 +84,7 @@ describe('App component', () => {
         },
       });
 
-      render(<App />);
+      customRender(<App />);
 
       expect(mockFetchCharacters).toHaveBeenCalledWith('', 1);
       expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -111,7 +115,7 @@ describe('App component', () => {
         },
       });
 
-      render(<App />);
+      customRender(<App />);
 
       expect(mockFetchCharacters).toHaveBeenCalledWith('Rick', 1);
 
@@ -140,7 +144,7 @@ describe('App component', () => {
         },
       });
 
-      render(<App />);
+      customRender(<App />);
 
       expect(screen.getByText(/loading/i)).toBeInTheDocument();
 
@@ -161,7 +165,7 @@ describe('App component', () => {
         },
       });
 
-      render(<App />);
+      customRender(<App />);
 
       expect(mockFetchCharacters).toHaveBeenCalledWith('', 1);
 
@@ -184,7 +188,7 @@ describe('App component', () => {
         },
       });
 
-      render(<App />);
+      customRender(<App />);
 
       expect(mockFetchCharacters).toHaveBeenCalledWith('', 1);
 
@@ -246,7 +250,7 @@ describe('App component', () => {
         },
       });
 
-      render(<App />);
+      customRender(<App />);
 
       await waitFor(() => {
         expect(screen.getByText(/Summer Smith/i)).toBeInTheDocument();
@@ -258,7 +262,7 @@ describe('App component', () => {
       const errorMessage = 'No characters found';
       mockFetchCharacters.mockRejectedValueOnce(new Error(errorMessage));
 
-      render(<App />);
+      customRender(<App />);
 
       await waitFor(() => {
         expect(screen.getByText(errorMessage)).toBeInTheDocument();
@@ -289,7 +293,7 @@ describe('App component', () => {
         },
       });
 
-      render(<App />);
+      customRender(<App />);
 
       await waitFor(() => {
         expect(screen.getByText(/Birdperson/i)).toBeInTheDocument();
@@ -327,7 +331,7 @@ describe('App component', () => {
           },
         });
 
-      render(<App />);
+      customRender(<App />);
 
       const input = getSearchInput();
       const user = userEvent.setup();
@@ -348,7 +352,7 @@ describe('App component', () => {
     it('clears error state on new search', async () => {
       mockFetchCharacters.mockRejectedValueOnce(new Error('Network error'));
 
-      render(<App />);
+      customRender(<App />);
 
       await waitFor(() => {
         expect(screen.getByText(/Network error/i)).toBeInTheDocument();
@@ -408,7 +412,7 @@ describe('App component', () => {
         },
       });
 
-      render(<App />);
+      customRender(<App />);
 
       expect(mockFetchCharacters).toHaveBeenCalled();
 
@@ -421,7 +425,7 @@ describe('App component', () => {
       const errorMessage = 'API is down';
       mockFetchCharacters.mockRejectedValueOnce(new Error(errorMessage));
 
-      render(<App />);
+      customRender(<App />);
 
       expect(mockFetchCharacters).toHaveBeenCalled();
 
@@ -469,7 +473,7 @@ describe('App component', () => {
           },
         });
 
-      render(<App />);
+      customRender(<App />);
 
       await waitFor(() => {
         expect(screen.getByText(/Pickle Rick/i)).toBeInTheDocument();

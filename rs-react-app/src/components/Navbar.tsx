@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router';
-import { useDarkMode } from '../hooks/useDarkMode';
+import { useTheme } from '../hooks/useTheme';
 
 export const Navbar = () => {
-  const { theme, toggleTheme } = useDarkMode();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="bg-slate-400">
