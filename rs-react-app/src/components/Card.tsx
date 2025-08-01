@@ -31,7 +31,7 @@ export const Card = ({
   };
 
   return (
-    <div className="flex items-center gap-4 p-4 duration-500 bg-transparent border rounded-lg shadow cursor-pointer hover:bg-slate-800">
+    <div className="flex items-center gap-4 p-4 duration-500 bg-transparent border rounded-lg shadow cursor-pointer dark:hover:bg-slate-800 hover:bg-slate-300">
       {image && (
         <img src={image} alt={name} className="w-16 h-16 rounded-full" />
       )}

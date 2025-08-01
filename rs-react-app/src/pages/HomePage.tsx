@@ -48,7 +48,7 @@ export const HomePage = () => {
   return (
     <ErrorBoundary>
       <main
-        className="min-h-screen antialiased text-slate-400 bg-slate-900"
+        className="min-h-screen antialiased bg-slate-200 dark:text-slate-400 dark:bg-slate-900 text-slate-700"
         onClick={() => {
           if (detailsId) {
             setSearchParams({ page: String(page) });
