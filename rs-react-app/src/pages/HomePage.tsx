@@ -9,6 +9,7 @@ import { SearchBar } from '../components/SearchBar';
 import { Loader } from '../components/Loader';
 import { CardList } from '../components/CardList';
 import { PaginationContainer } from '../components/PaginationContainer';
+import { Flyout } from '../components/Flyout';
 
 export const HomePage = () => {
   const [data, setData] = useState<Character[]>([]);
@@ -71,6 +72,7 @@ export const HomePage = () => {
             ) : (
               <>
                 <CardList data={data} onCardClick={handleCardClick} />
+                <Flyout />
                 <PaginationContainer
                   currentPage={page}
                   pageCount={pageCount}

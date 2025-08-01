@@ -31,10 +31,11 @@ export const Card = ({ id, name, description, image }: CardProps) => {
         <p className="text-sm">{description}</p>
       </div>
       <div>
-        <label htmlFor={`checkbox-${id}`} className="text-sm font-bold">
+        <label htmlFor={`checkbox-${id}`} className="sr-only">
           {id}
         </label>
         <input
+          className="border rounded-full appearance-none cursor-pointer border-slate-400 size-5 checked:bg-amber-600 checked:border-amber-600"
           id={`checkbox-${id}`}
           type="checkbox"
           checked={isSelected}
