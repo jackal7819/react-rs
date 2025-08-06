@@ -3,14 +3,19 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { App } from './App.tsx';
 import { ThemeProviderWrapper } from './components/ThemeProviderWrapper.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element not found');
 
+const queryClient = new QueryClient();
+
 createRoot(rootElement).render(
   <StrictMode>
-    <ThemeProviderWrapper>
-      <App />
-    </ThemeProviderWrapper>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProviderWrapper>
+        <App />
+      </ThemeProviderWrapper>
+    </QueryClientProvider>
   </StrictMode>
 );
