@@ -1,44 +1,26 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
-import { fetchCharacterById } from '../api';
-import { Character } from '../types';
 import { Loader } from './Loader';
+import { useSearchParams } from 'react-router';
+import { useCharacterQuery } from '../hooks/useCharacterQuery';
 
 export const DetailPanel = () => {
-  const [character, setCharacter] = useState<Character | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const id = searchParams.get('details');
 
-  useEffect(() => {
-    if (!id) return;
-
-    const fetch = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await fetchCharacterById(Number(id));
-        setCharacter(data);
-      } catch (err) {
-        if (err instanceof Error) setError(err.message);
-        else setError('Failed to load character.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetch();
-  }, [id]);
+  const {
+    data: character,
+    isPending,
+    isError,
+    error,
+  } = useCharacterQuery(id ? Number(id) : null);
 
   const handleClose = () => {
     searchParams.delete('details');
     setSearchParams(searchParams);
   };
 
-  if (loading) return <Loader />;
-  if (error) return <div className="text-rose-500">{error}</div>;
+  if (isPending) return <Loader />;
+  if (isError) return <div className="text-rose-500">{error.message}</div>;
   if (!character) return null;
 
   return (

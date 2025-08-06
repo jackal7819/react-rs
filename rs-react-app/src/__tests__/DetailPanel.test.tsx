@@ -1,10 +1,13 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import { DetailPanel } from '../components/DetailPanel';
 import { fetchCharacterById } from '../api';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const mockDelete = vi.fn();
 const mockSetSearchParams = vi.fn();
+
 vi.mock('react-router', () => ({
   useSearchParams: () => [
     {
@@ -18,6 +21,13 @@ vi.mock('react-router', () => ({
 vi.mock('../api');
 const mockedFetch = vi.mocked(fetchCharacterById);
 
+const renderWithClient = (ui: React.ReactNode) => {
+  const queryClient = new QueryClient();
+  return render(
+    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+  );
+};
+
 describe('DetailPanel', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -30,7 +40,7 @@ describe('DetailPanel', () => {
   test('shows loader while fetching', async () => {
     mockedFetch.mockReturnValue(new Promise(() => {}));
 
-    render(<DetailPanel />);
+    renderWithClient(<DetailPanel />);
 
     expect(screen.getByRole('status')).toBeInTheDocument();
   });
@@ -48,14 +58,12 @@ describe('DetailPanel', () => {
       episode: [],
     });
 
-    render(<DetailPanel />);
+    renderWithClient(<DetailPanel />);
 
-    await waitFor(() =>
-      expect(screen.getByRole('heading', { name: /Rick/i })).toBeInTheDocument()
-    );
+    await screen.findByRole('heading', { name: /Rick/i });
 
     const btn = screen.getByRole('button', { name: /Close details/i });
-    fireEvent.click(btn);
+    await userEvent.click(btn);
 
     expect(mockDelete).toHaveBeenCalledWith('details');
     expect(mockSetSearchParams).toHaveBeenCalledWith(expect.any(Object));
