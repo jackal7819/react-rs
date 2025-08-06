@@ -9,7 +9,14 @@ import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element not found');
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+    },
+  },
+});
 
 createRoot(rootElement).render(
   <StrictMode>

@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface SearchBarProps {
@@ -5,6 +6,7 @@ interface SearchBarProps {
 }
 
 export const SearchBar = ({ onSearch }: SearchBarProps) => {
+  const queryClient = useQueryClient();
   const [term, setTerm] = useLocalStorage('searchTerm', '');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,6 +17,9 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
     const trimmed = term.trim();
     setTerm(trimmed);
     onSearch(trimmed);
+    queryClient.refetchQueries({
+      queryKey: ['characters', trimmed],
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -36,6 +41,15 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
       />
+      <button
+        type="button"
+        className="bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer"
+        onClick={() =>
+          queryClient.invalidateQueries({ queryKey: ['characters'] })
+        }
+      >
+        Refresh
+      </button>
       <button
         type="button"
         className="bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer"
