@@ -10,6 +10,10 @@ lerna-debug.log*
 # Node modules in any subfolder
 **/node_modules/
 
+# next.js
+**/.next/
+**/out/
+
 # Build output
 **/dist/
 **/build/

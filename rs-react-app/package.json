@@ -1,6 +1,6 @@
 {
   "name": "rs-react-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.84.2",
     "next": "15.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
