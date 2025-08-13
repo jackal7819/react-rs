@@ -33,7 +33,7 @@ export default function DetailPanel() {
 	if (!character) return null;
 
 	return (
-		<div className='relative p-4 rounded-lg bg-slate-800'>
+		<div className='relative p-4 rounded-lg dark:bg-slate-800 bg-slate-300'>
 			<button
 				type='button'
 				className='absolute text-2xl duration-500 cursor-pointer top-4 right-4 text-slate-400 hover:text-white'

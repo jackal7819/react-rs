@@ -45,7 +45,12 @@ export default function PaginationContainer({
 	const pages = generatePages();
 
 	return (
-		<div className='flex items-center justify-center mt-4 mb-8 text-lg'>
+		<div
+			className='flex items-center justify-center mt-4 mb-8 text-lg'
+			onClick={(e) => {
+				e.stopPropagation();
+			}}
+		>
 			<div className='flex flex-wrap gap-1'>
 				<button
 					type='button'

@@ -38,7 +38,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 				name='search'
 				type='search'
 				aria-label='Search characters'
-				className='appearance-none outline-none w-full border-2 bg-transparent focus:border-amber-500 font-medium rounded-lg text-xl px-5 py-2.5 me-2 inline-flex items-center text-white duration-500 border-slate-400'
+				className='appearance-none outline-none w-full border-2 bg-transparent focus:border-amber-500 font-medium rounded-lg text-xl px-5 py-2.5 me-2 inline-flex items-center dark:text-white duration-500 border-slate-400'
 				value={term}
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}
