@@ -8,20 +8,29 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-	const [theme, setTheme] = useState<Theme>(() => {
-		if (typeof window !== 'undefined' && window.localStorage) {
-			return (localStorage.getItem('theme') as Theme) || 'light';
-		}
-		return 'light';
-	});
+	const [theme, setTheme] = useState<Theme>('light');
+	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
-		const root = window.document.documentElement;
-		root.classList.toggle('dark', theme === 'dark');
-		localStorage.setItem('theme', theme);
-	}, [theme]);
+		const storedTheme = localStorage.getItem('theme') as Theme;
+		setTheme(storedTheme || 'light');
 
-	const toggleTheme = () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+		const root = window.document.documentElement;
+		root.classList.toggle('dark', storedTheme === 'dark');
+
+		setMounted(true);
+	}, []);
+
+	const toggleTheme = () => {
+		const newTheme = theme === 'dark' ? 'light' : 'dark';
+		setTheme(newTheme);
+		localStorage.setItem('theme', newTheme);
+
+		const root = window.document.documentElement;
+		root.classList.toggle('dark', newTheme === 'dark');
+	};
+
+	if (!mounted) return null;
 
 	return (
 		<ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
