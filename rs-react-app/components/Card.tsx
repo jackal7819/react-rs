@@ -1,6 +1,6 @@
 'use client';
 
-import { useSelectedItemsStore } from '@/store/selectedItemsStore'
+import { useSelectedItemsStore } from '@/store/selectedItemsStore';
 import Image from 'next/image';
 
 interface CardProps {
@@ -28,7 +28,9 @@ export default function Card({ id, name, status, species, gender, image }: CardP
 
 	return (
 		<div className='flex items-center gap-4 p-4 duration-500 bg-transparent border rounded-lg shadow cursor-pointer dark:hover:bg-slate-800 hover:bg-slate-300'>
-			{image && <Image src={image} alt={name} className='w-16 h-16 rounded-full' />}
+			{image && (
+				<Image width='64' height='64' src={image} alt={name} className='rounded-full' />
+			)}
 
 			<div>
 				<h2 className='text-lg font-bold'>{name || 'Unknown'}</h2>

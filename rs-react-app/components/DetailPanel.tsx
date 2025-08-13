@@ -5,7 +5,7 @@ import { useCharacterQuery } from '@/hooks/useCharacterQuery';
 import Image from 'next/image';
 import Loader from './Loader';
 
-export const DetailPanel = () => {
+export default function DetailPanel() {
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const router = useRouter();
@@ -45,7 +45,7 @@ export const DetailPanel = () => {
 
 			<h2 className='mb-2 text-2xl font-bold'>{character.name}</h2>
 
-			<Image fill src={character.image} alt={character.name} className='mb-4 rounded-lg' />
+			<Image width='365' height='200' src={character.image} alt={character.name} className='mb-4 rounded-lg' />
 
 			<ul className='space-y-1 text-lg'>
 				<li>
@@ -74,4 +74,4 @@ export const DetailPanel = () => {
 			</ul>
 		</div>
 	);
-};
+}
