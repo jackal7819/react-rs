@@ -14,3 +14,7 @@ body {
 p {
 	font-family: 'Russo One', sans-serif;
 }
+
+.min-h-page {
+	min-height: calc(100vh - 56px);
+}

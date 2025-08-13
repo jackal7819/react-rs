@@ -34,7 +34,7 @@ export default function HomeInner() {
 
 	return (
 		<main
-			className='min-h-screen antialiased bg-slate-200 text-slate-700 dark:bg-slate-900 dark:text-slate-400'
+			className='antialiased min-h-page bg-slate-200 text-slate-700 dark:bg-slate-900 dark:text-slate-400'
 			onClick={handleBackgroundClick}
 		>
 			<div className='flex gap-4 p-4 mx-auto max-w-7xl'>

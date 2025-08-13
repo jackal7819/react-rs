@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function AboutPage() {
 	return (
-		<div className='grid min-h-screen px-8 antialiased md:pb-20 bg-slate-200 dark:text-slate-400 dark:bg-slate-900 text-slate-700 place-items-center'>
+		<div className='grid px-8 antialiased min-h-page md:pb-20 bg-slate-200 dark:text-slate-400 dark:bg-slate-900 text-slate-700 place-items-center'>
 			<div className='max-w-4xl p-4 mx-auto'>
 				<h1 className='mb-6 text-4xl font-bold text-center'>About Viktor Filippov</h1>
 				<p className='mb-4 text-lg'>
