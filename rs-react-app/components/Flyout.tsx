@@ -1,11 +1,11 @@
-'use client';
-
 import { CsvItem } from '@/types';
 
 import { compileCsv } from '@/app/actions/exportCsv';
 import { useSelectedItemsStore } from '@/store/selectedItemsStore';
+import { useTranslations } from 'next-intl';
 
 export default function Flyout() {
+	const t = useTranslations('Flyout');
 	const { selectedItems, unselectAll } = useSelectedItemsStore();
 
 	if (selectedItems.length === 0) return null;
@@ -23,20 +23,22 @@ export default function Flyout() {
 
 	return (
 		<div className='sticky bottom-0 flex flex-wrap items-center gap-4 px-4 py-2 rounded-lg bg-amber-100'>
-			<p className='uppercase'>{selectedItems.length} items are selected</p>
+			<p className='uppercase'>
+				{selectedItems.length} {t('items')}
+			</p>
 			<button
 				type='button'
 				onClick={unselectAll}
 				className='bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer'
 			>
-				Unselect all
+				{t('unselect')}
 			</button>
 			<button
 				type='button'
 				onClick={handleDownload}
 				className='bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer'
 			>
-				Download
+				{t('download')}
 			</button>
 		</div>
 	);

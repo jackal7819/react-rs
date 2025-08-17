@@ -1,0 +1,50 @@
+{
+	"Navbar": {
+		"home": "Home",
+		"about": "About",
+		"dark": "Dark Mode",
+		"light": "Light Mode"
+	},
+	"About": {
+		"about": "About Viktor Filippov",
+		"hello": "Hello! I'm a beginner frontend developer currently studying React on the RS School course. I love programming and enjoy learning new technologies to build awesome web applications.",
+		"this": "This application was created as part of my learning journey. It uses the Rick and Morty API to display fun and interesting content.",
+		"to": "To learn React and become a frontend developer, I recommend the",
+		"school": "RS School React course",
+		"back": "Back to Home"
+	},
+	"NotFound": {
+		"page": "page not found",
+		"sorry": "Sorry, we could not find the page you are looking for...",
+		"go": "go back home"
+	},
+	"CardList": {
+		"no": "No results"
+	},
+	"DetailPanel": {
+		"status": "Status",
+		"species": "Species",
+		"type": "Type",
+		"gender": "Gender",
+		"origin": "Origin",
+		"location": "Location",
+		"episodes": "Episodes"
+	},
+	"Flyout": {
+		"items": "items are selected",
+		"unselect": "Unselect all",
+		"download": "Download"
+	},
+	"Loader": {
+		"loading": "Loading..."
+	},
+	"PaginationContainer": {
+		"prev": "Prev",
+		"next": "Next"
+	},
+	"SearchBar": {
+		"placeholder": "Search...",
+		"refresh": "Refresh",
+		"search": "Search"
+	}
+}

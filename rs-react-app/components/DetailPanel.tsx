@@ -1,11 +1,11 @@
-'use client';
-
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useCharacterQuery } from '@/hooks/useCharacterQuery';
 import Image from 'next/image';
 import Loader from './Loader';
+import { useTranslations } from 'next-intl';
 
 export default function DetailPanel() {
+	const t = useTranslations('DetailPanel');
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const router = useRouter();
@@ -56,27 +56,27 @@ export default function DetailPanel() {
 
 			<ul className='space-y-1 text-lg'>
 				<li>
-					<strong>Status:</strong> {character.status}
+					<strong>{t('status')}:</strong> {character.status}
 				</li>
 				<li>
-					<strong>Species:</strong> {character.species}
+					<strong>{t('species')}:</strong> {character.species}
 				</li>
 				{character.type && (
 					<li>
-						<strong>Type:</strong> {character.type}
+						<strong>{t('type')}:</strong> {character.type}
 					</li>
 				)}
 				<li>
-					<strong>Gender:</strong> {character.gender}
+					<strong>{t('gender')}:</strong> {character.gender}
 				</li>
 				<li>
-					<strong>Origin:</strong> {character.origin?.name}
+					<strong>{t('origin')}:</strong> {character.origin?.name}
 				</li>
 				<li>
-					<strong>Location:</strong> {character.location?.name}
+					<strong>{t('location')}:</strong> {character.location?.name}
 				</li>
 				<li>
-					<strong>Episodes:</strong> {character.episode?.length ?? 0}
+					<strong>{t('episodes')}:</strong> {character.episode?.length ?? 0}
 				</li>
 			</ul>
 		</div>

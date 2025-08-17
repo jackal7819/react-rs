@@ -1,5 +1,4 @@
-'use client';
-
+import { useTranslations } from 'next-intl'
 import Card from './Card';
 import { Character } from '@/types';
 
@@ -9,8 +8,10 @@ interface CardListProps {
 }
 
 export default function CardList({ data, onCardClick }: CardListProps) {
-	if (!data.length) {
-		return <p className='p-4 text-gray-500'>No results</p>;
+	const t = useTranslations('CardList');
+	
+	if (data && data.length === 0) {
+		return <p className='p-4 text-xl text-gray-500'>{t('no')}</p>;
 	}
 
 	return (

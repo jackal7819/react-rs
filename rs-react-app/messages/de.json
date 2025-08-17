@@ -1,0 +1,50 @@
+{
+	"Navbar": {
+		"home": "Startseite",
+		"about": "Über",
+		"dark": "Dunkler Modus",
+		"light": "Licht Mod"
+	},
+	"About": {
+		"about": "Über Viktor Filippov",
+		"hello": "Hallo! Ich bin ein Anfänger in der Frontend-Entwicklung und lerne gerade React im RS School Kurs. Ich liebe das Programmieren und genieße es, neue Technologien zu lernen, um tolle Webanwendungen zu entwickeln.",
+		"this": "Diese Anwendung wurde als Teil meiner Lernreise erstellt. Sie nutzt die Rick and Morty API, um lustige und interessante Inhalte anzuzeigen.",
+		"to": "Um React zu lernen und ein Frontend-Entwickler zu werden, empfehle ich den",
+		"school": "RS School React-Kurs",
+		"back": "Zurück zur Startseite"
+	},
+	"NotFound": {
+		"page": "Seite nicht gefunden",
+		"sorry": "Sorry, wir konnten die von Ihnen gesuchte Seite nicht finden...",
+		"go": "Gehe zurück nach Hause"
+	},
+	"CardList": {
+		"no": "Keine Ergebnisse"
+	},
+	"DetailPanel": {
+		"status": "Status",
+		"species": "Arten",
+		"type": "Typ",
+		"gender": "Geschlecht",
+		"origin": "Herkunft",
+		"location": "Ort",
+		"episodes": "Episoden"
+	},
+	"Flyout": {
+		"items": "Elemente ausgewählt sind",
+		"unselect": "Alle abwählen",
+		"download": "Herunterladen"
+	},
+	"Loader": {
+		"loading": "Laden..."
+	},
+	"PaginationContainer": {
+		"prev": "Vorherige",
+		"next": "Weiter"
+	},
+	"SearchBar": {
+		"placeholder": "Suche...",
+		"refresh": "Aktualisieren",
+		"search": "Suche"
+	}
+}

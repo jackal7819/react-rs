@@ -1,5 +1,3 @@
-'use client';
-
 import { useSelectedItemsStore } from '@/store/selectedItemsStore';
 import Image from 'next/image';
 

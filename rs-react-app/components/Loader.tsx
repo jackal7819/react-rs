@@ -1,4 +1,8 @@
+import { useTranslations } from 'next-intl';
+
 export default function Loader() {
+	const t = useTranslations('Loader');
+
 	return (
 		<button
 			disabled
@@ -22,7 +26,7 @@ export default function Loader() {
 					fill='currentColor'
 				/>
 			</svg>
-			Loading...
+			{t('loading')}
 		</button>
 	);
 }

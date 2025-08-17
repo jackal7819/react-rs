@@ -1,13 +1,13 @@
-'use client';
-
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useTranslations } from 'next-intl';
 
 interface SearchBarProps {
 	onSearch: (term: string) => void;
 }
 
 export default function SearchBar({ onSearch }: SearchBarProps) {
+	const t = useTranslations('SearchBar');
 	const queryClient = useQueryClient();
 	const [term, setTerm] = useLocalStorage('searchTerm', '');
 
@@ -34,7 +34,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 	return (
 		<div className='flex gap-2 py-4'>
 			<input
-				placeholder='Search...'
+				placeholder={t('placeholder')}
 				name='search'
 				type='search'
 				aria-label='Search characters'
@@ -48,14 +48,14 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 				className='bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer'
 				onClick={() => queryClient.invalidateQueries({ queryKey: ['characters'] })}
 			>
-				Refresh
+				{t('refresh')}
 			</button>
 			<button
 				type='button'
 				className='bg-amber-600 font-medium rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer'
 				onClick={handleSearch}
 			>
-				Search
+				{t('search')}
 			</button>
 		</div>
 	);

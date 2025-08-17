@@ -1,10 +1,13 @@
 'use client';
 
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { useTheme } from '@/hooks/useTheme';
+import LanguageSwitcher from './LanguageSwitcher';
 
-export default function Navbar () {
+export default function Navbar() {
 	const { theme, toggleTheme } = useTheme();
+	const t = useTranslations('Navbar');
 
 	return (
 		<div className='bg-slate-400'>
@@ -14,13 +17,13 @@ export default function Navbar () {
 						href='/'
 						className="text-black text-2xl font-semibold duration-500 cursor-pointer hover:brightness-110 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-black after:duration-500 hover:after:w-full"
 					>
-						Home
+						{t('home')}
 					</Link>
 					<Link
 						href='/about'
 						className="text-black text-2xl font-semibold duration-500 cursor-pointer hover:brightness-110 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-black after:duration-500 hover:after:w-full"
 					>
-						About
+						{t('about')}
 					</Link>
 				</div>
 				<div className='flex items-center gap-4'>
@@ -29,23 +32,11 @@ export default function Navbar () {
 						onClick={toggleTheme}
 						className='inline-flex items-center px-2 py-1.5 text-xl text-center text-black duration-500 bg-white rounded-lg cursor-pointer hover:text-amber-600 font-semibold'
 					>
-						{theme === 'light' ? 'Dark' : 'Light'} Mode
+						{theme === 'light' ? t('dark') : t('light')}
 					</button>
-					<a
-						href='https://rs.school/'
-						target='_blank'
-						rel='noopener noreferrer'
-						className='flex items-center justify-center p-1 text-xl font-semibold duration-500 bg-black rounded-md group hover:bg-amber-600'
-					>
-						<span className='ml-1 mr-2 text-white duration-500 group-hover:text-white'>
-							RS
-						</span>
-						<span className='flex items-center justify-center w-20 h-8 text-black duration-500 bg-white rounded group-hover:text-amber-600'>
-							School
-						</span>
-					</a>
+					<LanguageSwitcher />
 				</div>
 			</nav>
 		</div>
 	);
-};
+}

@@ -1,4 +1,4 @@
-'use client';
+import { useTranslations } from 'next-intl';
 
 interface PaginationContainerProps {
 	currentPage: number;
@@ -11,6 +11,8 @@ export default function PaginationContainer({
 	pageCount,
 	onPageChange,
 }: PaginationContainerProps) {
+	const t = useTranslations('PaginationContainer');
+
 	const generatePages = () => {
 		const pages: (number | string)[] = [];
 
@@ -52,15 +54,16 @@ export default function PaginationContainer({
 			}}
 		>
 			<div className='flex flex-wrap gap-1'>
-				<button
-					type='button'
-					className='p-2 px-4 duration-500 rounded-lg cursor-pointer disabled:opacity-50 hover:bg-amber-600 hover:text-black disabled:hover:bg-transparent disabled:hover:cursor-default disabled:hover:text-slate-400'
-					disabled={currentPage === 1}
-					onClick={() => onPageChange(currentPage - 1)}
-				>
-					Prev
-				</button>
-
+				{pages.length > 0 && (
+					<button
+						type='button'
+						className='p-2 px-4 duration-500 rounded-lg cursor-pointer disabled:opacity-50 hover:bg-amber-600 hover:text-black disabled:hover:bg-transparent disabled:hover:cursor-default disabled:hover:text-slate-400'
+						disabled={currentPage === 1}
+						onClick={() => onPageChange(currentPage - 1)}
+					>
+						{t('prev')}
+					</button>
+				)}
 				{pages.map((page, index) =>
 					typeof page === 'number' ? (
 						<button
@@ -81,15 +84,16 @@ export default function PaginationContainer({
 						</span>
 					)
 				)}
-
-				<button
-					type='button'
-					className='p-2 px-4 duration-500 rounded-lg cursor-pointer disabled:opacity-50 hover:bg-amber-600 hover:text-black disabled:hover:bg-transparent disabled:hover:cursor-default disabled:hover:text-slate-400'
-					disabled={currentPage === pageCount}
-					onClick={() => onPageChange(currentPage + 1)}
-				>
-					Next
-				</button>
+				{pages.length > 0 && (
+					<button
+						type='button'
+						className='p-2 px-4 duration-500 rounded-lg cursor-pointer disabled:opacity-50 hover:bg-amber-600 hover:text-black disabled:hover:bg-transparent disabled:hover:cursor-default disabled:hover:text-slate-400'
+						disabled={currentPage === pageCount}
+						onClick={() => onPageChange(currentPage + 1)}
+					>
+						{t('next')}
+					</button>
+				)}
 			</div>
 		</div>
 	);
