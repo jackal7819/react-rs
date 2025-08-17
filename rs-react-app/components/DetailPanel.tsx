@@ -45,7 +45,14 @@ export default function DetailPanel() {
 
 			<h2 className='mb-2 text-2xl font-bold'>{character.name}</h2>
 
-			<Image width='365' height='200' src={character.image} alt={character.name} className='mb-4 rounded-lg' />
+			<Image
+				width='365'
+				height='200'
+				src={character.image}
+				alt={character.name}
+				priority
+				className='mb-4 rounded-lg'
+			/>
 
 			<ul className='space-y-1 text-lg'>
 				<li>
