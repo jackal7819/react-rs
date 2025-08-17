@@ -1,29 +1,22 @@
 'use client';
 
-import { useSelectedItemsStore } from '../store/selectedItemsStore';
+import { CsvItem } from '@/types';
+
+import { compileCsv } from '@/app/actions/exportCsv';
+import { useSelectedItemsStore } from '@/store/selectedItemsStore';
 
 export default function Flyout() {
 	const { selectedItems, unselectAll } = useSelectedItemsStore();
 
 	if (selectedItems.length === 0) return null;
 
-	const handleDownload = () => {
-		const headers = ['ID', 'Name', 'Status', 'Species', 'Gender'];
-		const rows = selectedItems.map((item) => [
-			item.id,
-			item.name,
-			item.status,
-			item.species,
-			item.gender,
-		]);
-		const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
-
-		const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+	const handleDownload = async () => {
+		const { filename, csv } = await compileCsv(selectedItems as CsvItem[]);
+		const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 		const url = URL.createObjectURL(blob);
-
 		const link = document.createElement('a');
 		link.href = url;
-		link.download = `${selectedItems.length}_items.csv`;
+		link.download = filename;
 		link.click();
 		URL.revokeObjectURL(url);
 	};
