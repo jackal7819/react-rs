@@ -1,29 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
-	const [value, setValue] = useState<T>(initialValue);
-
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			try {
-				const stored = localStorage.getItem(key);
-				setValue(stored ? JSON.parse(stored) : initialValue);
-			} catch (e) {
-				console.warn(`useLocalStorage: Failed to read key "${key}" from localStorage`, e);
-				setValue(initialValue);
-			}
+	const [storedValue, setStoredValue] = useState<T>(() => {
+		if (typeof window === 'undefined') {
+			return initialValue;
 		}
-	}, [key, initialValue]);
 
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			try {
-				localStorage.setItem(key, JSON.stringify(value));
-			} catch (e) {
-				console.warn(`useLocalStorage: Failed to write key "${key}" to localStorage`, e);
-			}
+		try {
+			const item = window.localStorage.getItem(key);
+			return item ? JSON.parse(item) : initialValue;
+		} catch (error) {
+			console.warn(`useLocalStorage: Failed to read key "${key}" from localStorage`, error);
+			return initialValue;
 		}
-	}, [key, value]);
+	});
 
-	return [value, setValue];
+	const setValue = useCallback(
+		(value: T) => {
+			try {
+				setStoredValue(value);
+
+				if (typeof window !== 'undefined') {
+					window.localStorage.setItem(key, JSON.stringify(value));
+				}
+			} catch (error) {
+				console.warn(`useLocalStorage: Failed to set key "${key}" in localStorage`, error);
+			}
+		},
+		[key]
+	);
+
+	return [storedValue, setValue];
 }
