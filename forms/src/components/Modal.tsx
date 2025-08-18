@@ -1,0 +1,35 @@
+import { useEffect } from 'react';
+import ReactDOM from 'react-dom';
+
+interface ModalProps {
+	isOpen: boolean;
+	onClose: () => void;
+	children: React.ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+	useEffect(() => {
+		const handleEsc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+		document.addEventListener('keydown', handleEsc);
+		return () => document.removeEventListener('keydown', handleEsc);
+	}, [onClose]);
+
+	if (!isOpen) return null;
+
+	return ReactDOM.createPortal(
+		<div
+			className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+			onClick={onClose}
+		>
+			<div
+				className='w-full max-w-md p-6 bg-white rounded shadow-lg'
+				onClick={(e) => e.stopPropagation()}
+			>
+				{children}
+			</div>
+		</div>,
+		document.body
+	);
+};
+
+export default Modal;
