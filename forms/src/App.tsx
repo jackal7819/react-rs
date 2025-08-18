@@ -1,9 +1,7 @@
+import MainPage from './pages/MainPage';
+
 const App = () => {
-	return (
-		<main>
-			<h1 className='text-3xl font-bold underline'>Hello world!</h1>
-		</main>
-	);
+	return <MainPage />;
 };
 
 export default App;

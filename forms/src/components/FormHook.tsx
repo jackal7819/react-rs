@@ -17,21 +17,24 @@ const FormHook: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-			<input {...register('name')} placeholder='Name' className='p-2 border rounded' />
+		<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5 text-xl'>
+			<input {...register('name')} placeholder='Name' className='p-4 border rounded-lg' />
 			<input
 				{...register('age')}
 				type='number'
 				placeholder='Age'
-				className='p-2 border rounded'
+				className='p-4 border rounded-lg'
 			/>
 			<input
 				{...register('email')}
 				type='email'
 				placeholder='Email'
-				className='p-2 border rounded'
+				className='p-4 border rounded-lg'
 			/>
-			<button type='submit' className='py-2 text-white bg-green-500 rounded'>
+			<button
+				type='submit'
+				className='bg-amber-600 font-medium rounded-lg px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-amber-500 duration-500 cursor-pointer justify-center'
+			>
 				Submit
 			</button>
 		</form>

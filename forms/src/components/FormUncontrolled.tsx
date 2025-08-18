@@ -18,11 +18,19 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-			<input ref={nameRef} placeholder='Name' className='p-2 border rounded' />
-			<input ref={ageRef} type='number' placeholder='Age' className='p-2 border rounded' />
-			<input ref={emailRef} type='email' placeholder='Email' className='p-2 border rounded' />
-			<button type='submit' className='py-2 text-white bg-blue-500 rounded'>
+		<form onSubmit={handleSubmit} className='flex flex-col gap-5 text-xl'>
+			<input ref={nameRef} placeholder='Name' className='p-4 border rounded-lg' />
+			<input ref={ageRef} type='number' placeholder='Age' className='p-4 border rounded-lg' />
+			<input
+				ref={emailRef}
+				type='email'
+				placeholder='Email'
+				className='p-4 border rounded-lg'
+			/>
+			<button
+				type='submit'
+				className='bg-emerald-600 font-medium rounded-lg px-5 py-2.5 text-center inline-flex items-center text-black hover:bg-emerald-500 duration-500 cursor-pointer justify-center'
+			>
 				Submit
 			</button>
 		</form>
