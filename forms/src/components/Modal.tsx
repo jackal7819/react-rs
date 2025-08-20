@@ -18,11 +18,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
 	return ReactDOM.createPortal(
 		<div
-			className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+			className='fixed inset-0 z-50 flex items-center justify-center py-10 bg-black/50'
 			onClick={onClose}
 		>
 			<div
-				className='w-full max-w-lg p-10 rounded-lg shadow-lg border-5 bg-slate-900 text-slate-400 shadow-slate-400 border-slate-400'
+				className='w-full max-w-lg p-10 rounded-lg shadow-lg border-5 bg-slate-900 text-slate-400 shadow-slate-400 border-slate-400 max-h-[90vh] overflow-y-auto'
 				onClick={(e) => e.stopPropagation()}
 			>
 				{children}
