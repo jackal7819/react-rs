@@ -4,9 +4,10 @@ export interface FormData {
 	name: string;
 	age: number;
 	email: string;
-	gender?: 'male' | 'female';
-	avatar?: string;
-	country?: string;
+	gender: 'male' | 'female';
+	avatar: string;
+	country: string;
+	acceptTnC: boolean;
 }
 
 interface FormStore {

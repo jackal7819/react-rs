@@ -19,3 +19,15 @@ export interface PasswordStrength {
 	unmet: PasswordRequirement[];
 	strength: number;
 }
+
+export interface FormValues {
+	name: string;
+	age: number;
+	email: string;
+	password: string;
+	confirmPassword: string;
+	gender: 'male' | 'female';
+	avatar: File;
+	country: string;
+	acceptTnC: boolean;
+}

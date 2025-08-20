@@ -30,11 +30,31 @@ const MainPage = () => {
 
 			<div className='grid grid-cols-2 gap-10'>
 				{submittedData.map((entry, index) => (
-					<div key={index} className='flex flex-col gap-5 p-10 rounded-lg shadow-lg border-5 shadow-slate-400 border-slate-400'>
-						<div>Name: {entry.name}</div>
-						<div>Age: {entry.age}</div>
-						<div>Email: {entry.email}</div>
-					</div>
+		<div
+			key={index}
+			className='flex flex-col gap-5 p-10 rounded-lg shadow-lg border-5 shadow-slate-400 border-slate-400'
+		>
+			<div><strong>Name:</strong> {entry.name}</div>
+			<div><strong>Age:</strong> {entry.age}</div>
+			<div><strong>Email:</strong> {entry.email}</div>
+			<div><strong>Gender:</strong> {entry.gender}</div>
+			<div><strong>Country:</strong> {entry.country}</div>
+			<div className='flex items-center gap-5'>
+				<strong>Avatar:</strong>{' '}
+				{entry.avatar ? (
+					<img
+						src={entry.avatar}
+						alt={`${entry.name}'s avatar`}
+						className='object-cover w-20 h-20 rounded-full'
+					/>
+				) : (
+					<span>No avatar uploaded</span>
+				)}
+			</div>
+			<div>
+				<strong>Accepted T&C:</strong> {entry.acceptTnC ? 'Yes' : 'No'}
+			</div>
+		</div>
 				))}
 			</div>
 

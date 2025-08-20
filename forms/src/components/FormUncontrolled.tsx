@@ -116,8 +116,9 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 			age: Number(ageRef.current?.value) || 0,
 			email: emailRef.current?.value || '',
 			gender: (genderRef.current?.value as 'male' | 'female') || undefined,
-			country: countryRef.current?.value || undefined,
-			avatar: avatarBase64 || undefined,
+			country: countryRef.current?.value || '',
+			avatar: avatarBase64 || '',
+			acceptTnC: acceptTnCRef.current?.checked || false,
 		};
 
 		addData(formData);
