@@ -11,7 +11,7 @@ export interface FormData {
 	acceptTnC: boolean;
 }
 
-interface FormStore {
+export interface FormStore {
 	submittedData: FormData[];
 	addData: (data: FormData) => void;
 }
