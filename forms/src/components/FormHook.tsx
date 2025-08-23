@@ -12,6 +12,13 @@ const FormHook: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 	const { addData } = useFormStore();
 	const { countries } = useCountryStore();
 
+	const [inputValue, setInputValue] = useState('');
+	const [showSuggestions, setShowSuggestions] = useState(false);
+
+	const filteredCountries = countries.filter((c) =>
+		c.name.toLowerCase().includes(inputValue.toLowerCase())
+	);
+
 	const {
 		register,
 		handleSubmit,
@@ -34,25 +41,23 @@ const FormHook: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 		}
 	}, [passwordValue, confirmPasswordValue, trigger]);
 
+	const onSubmit = async (data: FormValues) => {
+		let avatarBase64 = '';
 
-  const onSubmit = async (data: FormValues) => {
-    let avatarBase64 = '';
+		if (data.avatar) {
+			avatarBase64 = await fileToBase64(data.avatar);
+		}
 
-    if (data.avatar) {
-      avatarBase64 = await fileToBase64(data.avatar);
-    }
+		addData({ ...data, avatar: avatarBase64 });
 
-    addData({ ...data, avatar: avatarBase64 });
-
-    onClose();
-  };
+		onClose();
+	};
 
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
 			className='flex flex-col max-w-md gap-4 mx-auto text-lg'
 		>
-			{/* Name */}
 			<div className='flex flex-col gap-1'>
 				<label htmlFor='name' className='font-medium'>
 					Name *
@@ -189,7 +194,7 @@ const FormHook: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 				</select>
 			</div>
 
-			<div className='flex flex-col gap-1'>
+			<div className='relative flex flex-col gap-1'>
 				<label htmlFor='country' className='font-medium'>
 					Country *
 				</label>
@@ -198,14 +203,40 @@ const FormHook: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 						{errors.country.message}
 					</span>
 				)}
-				<select id='country' {...register('country')} className='p-4 border rounded-lg'>
-					<option value=''>Select Country</option>
-					{countries.map((country) => (
-						<option key={country.code} value={country.name}>
-							{country.name}
-						</option>
-					))}
-				</select>
+				<input
+					id='country'
+					type='text'
+					placeholder='Start typing country...'
+					className='p-4 border rounded-lg'
+					value={inputValue}
+					{...register('country', {
+						onChange: (e) => {
+							setInputValue(e.target.value);
+							setShowSuggestions(true);
+						},
+					})}
+					onFocus={() => setShowSuggestions(true)}
+					onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+					autoComplete='off'
+				/>
+				{showSuggestions && inputValue && filteredCountries.length > 0 && (
+					<ul className='absolute z-10 w-full overflow-auto bg-white border rounded-lg shadow-lg max-h-40 top-24'>
+						{filteredCountries.map((c) => (
+							<li
+								key={c.code}
+								className='p-2 cursor-pointer hover:bg-slate-200 text-slate-800'
+								onMouseDown={(e) => {
+									e.preventDefault();
+									setInputValue(c.name);
+									setValue('country', c.name, { shouldValidate: true });
+									setShowSuggestions(false);
+								}}
+							>
+								{c.name}
+							</li>
+						))}
+					</ul>
+				)}
 			</div>
 
 			<div className='flex flex-col gap-1'>

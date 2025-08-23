@@ -293,7 +293,7 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 					autoComplete='off'
 				/>
 				{showSuggestions && inputValue && filteredCountries.length > 0 && (
-					<ul className='absolute z-10 w-full mt-1 overflow-auto bg-white border rounded-lg shadow-lg max-h-40 top-24'>
+					<ul className='absolute z-10 w-full overflow-auto bg-white border rounded-lg shadow-lg max-h-40 top-24'>
 						{filteredCountries.map((c) => (
 							<li
 								key={c.code}
