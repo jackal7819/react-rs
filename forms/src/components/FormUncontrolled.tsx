@@ -115,6 +115,7 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 			name: nameRef.current?.value || '',
 			age: Number(ageRef.current?.value) || 0,
 			email: emailRef.current?.value || '',
+			password: passwordRef.current?.value || '',
 			gender: (genderRef.current?.value as 'male' | 'female') || undefined,
 			country: countryRef.current?.value || '',
 			avatar: avatarBase64 || '',

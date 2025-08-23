@@ -1,6 +1,6 @@
 import MainPage from './pages/MainPage';
 
-const App = () => {
+const App: React.FC = () => {
 	return <MainPage />;
 };
 

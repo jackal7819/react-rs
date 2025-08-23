@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 
 interface ModalProps {
 	isOpen: boolean;
@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
 	if (!isOpen) return null;
 
-	return ReactDOM.createPortal(
+	return createPortal(
 		<div
 			className='fixed inset-0 z-50 flex items-center justify-center py-10 bg-black/50'
 			onClick={onClose}
