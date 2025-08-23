@@ -10,7 +10,7 @@ interface CountryStore {
 	initializeCountries: () => void;
 }
 
-const COUNTRIES: Country[] = [
+export const COUNTRIES: Country[] = [
 	{ code: 'AF', name: 'Afghanistan' },
 	{ code: 'AL', name: 'Albania' },
 	{ code: 'DZ', name: 'Algeria' },
