@@ -19,7 +19,7 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 	const genderRef = useRef<HTMLSelectElement>(null);
 	const acceptTnCRef = useRef<HTMLInputElement>(null);
 	const avatarRef = useRef<HTMLInputElement>(null);
-	const countryRef = useRef<HTMLSelectElement>(null);
+	const countryRef = useRef<HTMLInputElement>(null);
 
 	const [errors, setErrors] = useState<ValidationErrors>({});
 	const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>({
@@ -28,7 +28,12 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 		strength: 0,
 	});
 	const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-	const [selectedCountry, setSelectedCountry] = useState('');
+	const [inputValue, setInputValue] = useState('');
+	const [showSuggestions, setShowSuggestions] = useState(false);
+
+	const filteredCountries = countries.filter((c) =>
+		c.name.toLowerCase().includes(inputValue.toLowerCase())
+	);
 
 	const handlePasswordChange = () => {
 		const password = passwordRef.current?.value || '';
@@ -132,7 +137,9 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 				<label htmlFor='name' className='font-medium'>
 					Name *
 				</label>
-				{errors.name && <span className='text-sm font-bold text-rose-500'>{errors.name}</span>}
+				{errors.name && (
+					<span className='text-sm font-bold text-rose-500'>{errors.name}</span>
+				)}
 				<input
 					id='name'
 					ref={nameRef}
@@ -145,7 +152,9 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 				<label htmlFor='age' className='font-medium'>
 					Age *
 				</label>
-				{errors.age && <span className='text-sm font-bold text-rose-500'>{errors.age}</span>}
+				{errors.age && (
+					<span className='text-sm font-bold text-rose-500'>{errors.age}</span>
+				)}
 				<input
 					id='age'
 					ref={ageRef}
@@ -160,7 +169,9 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 				<label htmlFor='email' className='font-medium'>
 					Email *
 				</label>
-				{errors.email && <span className='text-sm font-bold text-rose-500'>{errors.email}</span>}
+				{errors.email && (
+					<span className='text-sm font-bold text-rose-500'>{errors.email}</span>
+				)}
 				<input
 					id='email'
 					ref={emailRef}
@@ -174,7 +185,9 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 				<label htmlFor='password' className='font-medium'>
 					Password *
 				</label>
-				{errors.password && <span className='text-sm font-bold text-rose-500'>{errors.password}</span>}
+				{errors.password && (
+					<span className='text-sm font-bold text-rose-500'>{errors.password}</span>
+				)}
 				<input
 					id='password'
 					ref={passwordRef}
@@ -225,7 +238,9 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 					Confirm Password *
 				</label>
 				{errors.confirmPassword && (
-					<span className='text-sm font-bold text-rose-500'>{errors.confirmPassword}</span>
+					<span className='text-sm font-bold text-rose-500'>
+						{errors.confirmPassword}
+					</span>
 				)}
 				<input
 					id='confirmPassword'
@@ -240,7 +255,9 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 				<label htmlFor='gender' className='font-medium'>
 					Gender *
 				</label>
-				{errors.gender && <span className='text-sm font-bold text-rose-500'>{errors.gender}</span>}
+				{errors.gender && (
+					<span className='text-sm font-bold text-rose-500'>{errors.gender}</span>
+				)}
 				<select
 					id='gender'
 					ref={genderRef}
@@ -252,34 +269,54 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 					<option value='female'>Female</option>
 				</select>
 			</div>
-			<div className='flex flex-col gap-1'>
+			<div className='relative flex flex-col gap-1'>
 				<label htmlFor='country' className='font-medium'>
 					Country *
 				</label>
-				{errors.country && <span className='text-sm font-bold text-rose-500'>{errors.country}</span>}
-				<select
+				{errors.country && (
+					<span className='text-sm font-bold text-rose-500'>{errors.country}</span>
+				)}
+				<input
 					id='country'
+					type='text'
 					ref={countryRef}
+					placeholder='Start typing country...'
 					className='p-4 border rounded-lg'
+					value={inputValue}
 					onChange={(e) => {
-						setSelectedCountry(e.target.value);
+						setInputValue(e.target.value);
+						setShowSuggestions(true);
 						validateForm();
 					}}
-					value={selectedCountry}
-				>
-					<option value=''>Select Country</option>
-					{countries.map((country) => (
-						<option key={country.code} value={country.name}>
-							{country.name}
-						</option>
-					))}
-				</select>
+					onFocus={() => setShowSuggestions(true)}
+					onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+					autoComplete='off'
+				/>
+				{showSuggestions && inputValue && filteredCountries.length > 0 && (
+					<ul className='absolute z-10 w-full mt-1 overflow-auto bg-white border rounded-lg shadow-lg max-h-40 top-24'>
+						{filteredCountries.map((c) => (
+							<li
+								key={c.code}
+								className='p-2 cursor-pointer hover:bg-slate-200 text-slate-800'
+								onMouseDown={(e) => {
+									e.preventDefault();
+									setInputValue(c.name);
+									setShowSuggestions(false);
+								}}
+							>
+								{c.name}
+							</li>
+						))}
+					</ul>
+				)}
 			</div>
 			<div className='flex flex-col gap-1'>
 				<label htmlFor='avatar' className='font-medium'>
 					Avatar (PNG/JPEG, max 5MB) *
 				</label>
-				{errors.avatar && <span className='text-sm font-bold text-rose-500'>{errors.avatar}</span>}
+				{errors.avatar && (
+					<span className='text-sm font-bold text-rose-500'>{errors.avatar}</span>
+				)}
 				<input
 					id='avatar'
 					ref={avatarRef}
@@ -301,7 +338,9 @@ const FormUncontrolled: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 					I accept the Terms and Conditions *
 				</label>
 			</div>
-			{errors.acceptTnC && <span className='text-sm font-bold text-rose-500'>{errors.acceptTnC}</span>}
+			{errors.acceptTnC && (
+				<span className='text-sm font-bold text-rose-500'>{errors.acceptTnC}</span>
+			)}
 			<button
 				type='submit'
 				disabled={isSubmitDisabled}
