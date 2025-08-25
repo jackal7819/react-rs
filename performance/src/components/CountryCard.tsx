@@ -4,7 +4,7 @@ interface CountryCardProps {
 	country: Country;
 }
 
-const CountryCard = ({ country }: CountryCardProps) => {
+const CountryCard: React.FC<CountryCardProps> = ({ country }) => {
 	const latestYear = country.data[country.data.length - 1];
 	const population = latestYear?.population ?? 'N/A';
 

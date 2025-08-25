@@ -6,7 +6,7 @@ interface CountryListProps {
 	countriesResource: Promise<Country[]>;
 }
 
-const CountryList = ({ countriesResource }: CountryListProps) => {
+const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 	const countries = use(countriesResource);
 
 	return (
