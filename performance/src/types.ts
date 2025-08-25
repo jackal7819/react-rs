@@ -7,7 +7,7 @@ export interface YearData {
 }
 
 export interface Country {
-	country: string;
+	name: string;
 	iso_code?: string;
 	data: YearData[];
 }

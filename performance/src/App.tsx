@@ -1,9 +1,14 @@
-export const App = () => {
-	return (
-		<main>
-			<h1 className='text-3xl font-bold underline'> Hello world! </h1>
-		</main>
-	);
-};
+import { Suspense } from 'react';
+import { fetchCountriesData } from './hooks/useCountriesData';
+import CountryList from './components/CountryList';
+import Loader from './components/Loader';
+
+const countriesResource = fetchCountriesData();
+
+export const App = () => (
+	<Suspense fallback={<Loader />}>
+		<CountryList countriesResource={countriesResource} />
+	</Suspense>
+);
 
 export default App;

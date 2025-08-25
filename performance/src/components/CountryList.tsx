@@ -1,15 +1,18 @@
 import type { Country } from '../types';
+import { use } from 'react';
 import CountryCard from './CountryCard';
 
-type CountryListProps = {
-	countries: Country[];
-};
+interface CountryListProps {
+	countriesResource: Promise<Country[]>;
+}
 
-const CountryList = ({ countries }: CountryListProps) => {
+const CountryList = ({ countriesResource }: CountryListProps) => {
+	const countries = use(countriesResource);
+
 	return (
-		<div className='p-4'>
+		<div className='min-h-screen p-10 bg-slate-900 text-slate-400'>
 			{countries.slice(0, 20).map((country) => (
-				<CountryCard key={country.country} country={country} />
+				<CountryCard key={country.name} country={country} />
 			))}
 		</div>
 	);

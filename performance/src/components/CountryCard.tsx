@@ -11,7 +11,7 @@ const CountryCard = ({ country }: CountryCardProps) => {
 	return (
 		<div className='p-3 mb-4 border rounded shadow'>
 			<h2 className='text-lg font-bold'>
-				{country.country} {country.iso_code ? `(${country.iso_code})` : ''}
+				{country.name} {country.iso_code ? `(${country.iso_code})` : ''}
 			</h2>
 			<p>Population (latest): {population}</p>
 		</div>
