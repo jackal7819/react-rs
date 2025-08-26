@@ -5,7 +5,7 @@ interface SortControlsProps {
 }
 
 const SortControls: React.FC<SortControlsProps> = ({ sortBy, sortOrder, onSortChange }) => (
-	<div className='flex items-center gap-2'>
+	<div className='flex items-center gap-4'>
 		<label>Sort by:</label>
 		<select
 			name='sortBy'
