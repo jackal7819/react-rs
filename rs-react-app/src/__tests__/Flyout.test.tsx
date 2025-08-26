@@ -79,7 +79,6 @@ describe('Flyout component', () => {
       unselectAll: vi.fn(),
     }));
 
-    // ✅ Добавляем мок методов URL, если их нет
     if (!('createObjectURL' in URL)) {
       Object.defineProperty(URL, 'createObjectURL', {
         writable: true,

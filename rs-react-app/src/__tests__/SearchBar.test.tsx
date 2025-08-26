@@ -1,16 +1,22 @@
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, beforeEach, afterEach, vi, expect } from 'vitest';
 import { SearchBar } from '../components/SearchBar';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 describe('SearchBar Component', () => {
   const setup = (savedTerm: string | null = null) => {
+    const queryClient = new QueryClient();
     const onSearch = vi.fn();
 
     if (savedTerm !== null) {
       localStorage.setItem('searchTerm', JSON.stringify(savedTerm));
     }
 
-    render(<SearchBar onSearch={onSearch} />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <SearchBar onSearch={onSearch} />
+      </QueryClientProvider>
+    );
     const input = screen.getByPlaceholderText('Search...') as HTMLInputElement;
     const button = screen.getByRole('button', { name: /search/i });
 

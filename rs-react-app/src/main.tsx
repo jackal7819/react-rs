@@ -3,14 +3,29 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { App } from './App.tsx';
 import { ThemeProviderWrapper } from './components/ThemeProviderWrapper.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element not found');
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+    },
+  },
+});
+
 createRoot(rootElement).render(
   <StrictMode>
-    <ThemeProviderWrapper>
-      <App />
-    </ThemeProviderWrapper>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProviderWrapper>
+          <App />
+        </ThemeProviderWrapper>
+      </QueryClientProvider>
+    </ErrorBoundary>
   </StrictMode>
 );
