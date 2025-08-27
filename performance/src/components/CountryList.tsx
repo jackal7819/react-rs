@@ -1,11 +1,9 @@
 import type { Country, YearData } from '../types';
-
 import { use, useMemo, useState } from 'react';
 import CountryTable from './CountryTable';
 import YearSelector from './YearSelector';
 import RegionFilter from './RegionFilter';
 import SortControls from './SortControls';
-import CountryCard from './CountryCard';
 import SearchBar from './SearchBar';
 
 interface CountryListProps {
@@ -15,39 +13,33 @@ interface CountryListProps {
 const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 	const countries = use(countriesResource);
 
-	const [selectedYear, setSelectedYear] = useState<number | null>(null);
+	const years = useMemo(() => {
+		const setYears = new Set<number>();
+		countries.forEach((c) => c.data.forEach((d) => d.year != null && setYears.add(d.year)));
+		return Array.from(setYears).sort((a, b) => a - b);
+	}, [countries]);
+
+	const [selectedYear, setSelectedYear] = useState<number>(years[years.length - 1] ?? 0);
 	const [selectedRegion, setSelectedRegion] = useState<string>('');
 	const [searchQuery, setSearchQuery] = useState<string>('');
 	const [sortBy, setSortBy] = useState<'name' | 'population'>('name');
 	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-	const years = useMemo(() => {
-		const setYears = new Set<number>();
-		countries.forEach((c) =>
-			c.data.forEach((d) => {
-				if (d.year != null) setYears.add(d.year);
-			})
-		);
-		return Array.from(setYears).sort();
-	}, [countries]);
-
 	const regions = useMemo(() => {
 		const setRegions = new Set<string>();
-		countries.forEach((c) => {
-			if (c.name) setRegions.add(c.name);
-		});
+		countries.forEach((c) => c.name && setRegions.add(c.name));
 		return Array.from(setRegions).sort();
 	}, [countries]);
 
-	const filtered = useMemo(
-		() =>
-			countries.filter(
-				(c) =>
-					c.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-					(selectedRegion ? c.name === selectedRegion : true)
-			),
-		[countries, searchQuery, selectedRegion]
-	);
+	const filtered = useMemo(() => {
+		return countries.filter((c) => {
+			const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase());
+			const matchesRegion = !selectedRegion || c.name === selectedRegion;
+			const matchesYear =
+				!selectedYear || c.data.some((d: YearData) => d.year === selectedYear);
+			return matchesSearch && matchesRegion && matchesYear;
+		});
+	}, [countries, searchQuery, selectedRegion, selectedYear]);
 
 	const sorted = useMemo(() => {
 		return [...filtered].sort((a, b) => {
@@ -64,6 +56,13 @@ const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 			return 0;
 		});
 	}, [filtered, sortBy, sortOrder, selectedYear]);
+
+	const sortedFilteredData = useMemo(() => {
+		return sorted.map((country) => ({
+			...country,
+			data: selectedYear ? country.data.filter((d) => d.year === selectedYear) : country.data,
+		}));
+	}, [sorted, selectedYear]);
 
 	return (
 		<div className='min-h-screen p-10 bg-slate-900 text-slate-400'>
@@ -89,16 +88,13 @@ const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 				/>
 			</div>
 
-			{sorted.map((country) => (
-				<div key={country.iso_code ?? country.name} className='mb-6'>
-					<CountryCard country={country} />
-					<CountryTable
-						country={country}
-						selectedYear={selectedYear}
-						visibleColumns={[]}
-					/>
-				</div>
-			))}
+			<div className='mb-6'>
+				<CountryTable
+					countries={sortedFilteredData}
+					selectedYear={selectedYear}
+					visibleColumns={[]}
+				/>
+			</div>
 		</div>
 	);
 };

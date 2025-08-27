@@ -1,7 +1,7 @@
 interface YearSelectorProps {
 	years: number[];
-	selectedYear: number | null;
-	onChange: (year: number | null) => void;
+	selectedYear: number;
+	onChange: (year: number) => void;
 }
 
 const YearSelector: React.FC<YearSelectorProps> = ({ years, selectedYear, onChange }) => (
@@ -9,11 +9,10 @@ const YearSelector: React.FC<YearSelectorProps> = ({ years, selectedYear, onChan
 		name='year'
 		id='year'
 		aria-label='Select Year'
-		value={selectedYear ?? ''}
-		onChange={(e) => onChange(e.target.value ? parseInt(e.target.value) : null)}
+		value={selectedYear}
+		onChange={(e) => onChange(parseInt(e.target.value))}
 		className='p-2 text-white rounded bg-slate-700'
 	>
-		<option value=''>Select Year</option>
 		{years.map((year) => (
 			<option key={year} value={year}>
 				{year}

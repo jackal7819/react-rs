@@ -1,29 +1,19 @@
 import type { Country } from '../types';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useMemo, useState, useEffect } from 'react';
 
-interface YearRecord {
-	year: number;
-	population?: number | null;
-	co2?: number | null;
-	co2_per_capita?: number | null;
-	[key: string]: number | string | null | undefined;
-}
-
-interface CountryTableProps {
-	country: Country;
+interface CountriesTableProps {
+	countries: Country[];
 	selectedYear: number | null;
 	visibleColumns?: string[];
 }
 
-const DEFAULT_COLUMNS = ['year', 'population', 'co2', 'co2_per_capita'];
+const DEFAULT_COLUMNS = ['name', 'iso_code', 'year', 'population', 'co2', 'co2_per_capita'];
 
-const CountryTable: React.FC<CountryTableProps> = ({
-	country,
+const CountriesTable: React.FC<CountriesTableProps> = ({
+	countries,
 	selectedYear,
 	visibleColumns = [],
 }) => {
-	const rows = country.data as YearRecord[];
-
 	const columns = useMemo(() => {
 		const set = new Set<string>([...DEFAULT_COLUMNS, ...visibleColumns]);
 		const extras = Array.from(set)
@@ -42,37 +32,53 @@ const CountryTable: React.FC<CountryTableProps> = ({
 	}, [selectedYear]);
 
 	const rowsJSX = useMemo(() => {
-		return rows.map((r) => {
-			const key = `${country.iso_code ?? country.name}-${r.year}`;
-			const isHighlighted = highlightYear === r.year;
+		return countries.flatMap((country) =>
+			country.data.map((r) => {
+				const key = `${country.iso_code ?? country.name}-${r.year}`;
+				const isHighlighted = highlightYear === r.year;
 
-			return (
-				<tr
-					key={key}
-					className={`align-top ${isHighlighted ? 'animate-pulse bg-yellow-300/20' : ''}`}
-				>
-					{columns.map((col) => {
-						const raw = r[col];
-						const display =
-							raw === null || raw === undefined
-								? 'N/A'
-								: typeof raw === 'number'
-								? raw.toLocaleString(undefined, { useGrouping: false })
-								: String(raw);
+				return (
+					<tr
+						key={key}
+						className={`align-top ${
+							isHighlighted ? 'animate-pulse bg-yellow-300/20' : ''
+						}`}
+					>
+						{columns.map((col) => {
+							let raw: string | number | null | undefined;
 
-						return (
-							<td
-								key={`${key}-${col}`}
-								className='px-3 py-2 text-sm border-t border-r border-slate-600'
-							>
-								{display}
-							</td>
-						);
-					})}
-				</tr>
-			);
-		});
-	}, [rows, columns, highlightYear, country.iso_code, country.name]);
+							switch (col) {
+								case 'name':
+									raw = country.name;
+									break;
+								case 'iso_code':
+									raw = country.iso_code;
+									break;
+								default:
+									raw = r[col];
+							}
+
+							const display =
+								raw === null || raw === undefined
+									? 'N/A'
+									: typeof raw === 'number'
+									? raw.toLocaleString(undefined, { useGrouping: false })
+									: String(raw);
+
+							return (
+								<td
+									key={`${key}-${col}`}
+									className='px-3 py-2 text-sm border-t border-r border-slate-600'
+								>
+									{display}
+								</td>
+							);
+						})}
+					</tr>
+				);
+			})
+		);
+	}, [countries, columns, highlightYear]);
 
 	return (
 		<div className='mt-3'>
@@ -90,11 +96,11 @@ const CountryTable: React.FC<CountryTableProps> = ({
 							))}
 						</tr>
 					</thead>
-					<tbody>{rowsJSX.map((row) => row)}</tbody>
+					<tbody>{rowsJSX}</tbody>
 				</table>
 			</div>
 		</div>
 	);
 };
 
-export default memo(CountryTable);
+export default memo(CountriesTable);
