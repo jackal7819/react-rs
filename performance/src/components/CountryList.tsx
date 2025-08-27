@@ -1,9 +1,11 @@
 import type { Country, YearData } from '../types';
+import { EXTRA_COLUMNS_TOP5 } from '../constants'
 import { use, useMemo, useState } from 'react';
-import CountryTable from './CountryTable';
+import CountriesTable from './CountriesTable';
 import YearSelector from './YearSelector';
 import RegionFilter from './RegionFilter';
 import SortControls from './SortControls';
+import ColumnsModal from './ColumnsModal';
 import SearchBar from './SearchBar';
 
 interface CountryListProps {
@@ -12,6 +14,8 @@ interface CountryListProps {
 
 const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 	const countries = use(countriesResource);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
 
 	const years = useMemo(() => {
 		const setYears = new Set<number>();
@@ -86,13 +90,27 @@ const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 						setSortOrder(so);
 					}}
 				/>
+				<button
+					type='button'
+					className='px-3 py-2 text-white duration-500 rounded cursor-pointer bg-slate-700 hover:bg-slate-600'
+					onClick={() => setIsModalOpen(true)}
+				>
+					Extra Columns ⚙️
+				</button>
 			</div>
 
 			<div className='mb-6'>
-				<CountryTable
+				<CountriesTable
 					countries={sortedFilteredData}
 					selectedYear={selectedYear}
-					visibleColumns={[]}
+					visibleColumns={selectedColumns}
+				/>
+				<ColumnsModal
+					isOpen={isModalOpen}
+					availableColumns={EXTRA_COLUMNS_TOP5}  
+					selectedColumns={selectedColumns}
+					onClose={() => setIsModalOpen(false)}
+					onApply={setSelectedColumns}
 				/>
 			</div>
 		</div>

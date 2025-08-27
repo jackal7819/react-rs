@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ColumnsModalProps {
 	isOpen: boolean;
@@ -17,6 +18,17 @@ const ColumnsModal: React.FC<ColumnsModalProps> = ({
 }) => {
 	const [localSelection, setLocalSelection] = useState<string[]>(selectedColumns);
 
+	useEffect(() => {
+		if (isOpen) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = '';
+		}
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [isOpen]);
+
 	if (!isOpen) return null;
 
 	const toggleColumn = (col: string) => {
@@ -28,35 +40,41 @@ const ColumnsModal: React.FC<ColumnsModalProps> = ({
 	const selectAll = () => setLocalSelection([...availableColumns]);
 	const deselectAll = () => setLocalSelection([]);
 
-	return (
-		<div className='fixed inset-0 z-50 flex items-center justify-center bg-black/40'>
-			<div className='bg-slate-800 text-white rounded p-6 w-80 max-h-[80vh] overflow-y-auto'>
+	return createPortal(
+		<div
+			className='fixed inset-0 z-50 flex items-center justify-center bg-black/40'
+			onClick={onClose}
+		>
+			<div
+				className='bg-slate-800 text-white rounded p-6 w-80 max-h-[80vh] overflow-y-auto'
+				onClick={(e) => e.stopPropagation()}
+			>
 				<h2 className='mb-4 text-lg font-bold'>Select Columns</h2>
 				<div className='flex flex-col gap-2 mb-4'>
 					{availableColumns.map((col) => (
-						<label key={col} className='flex items-center gap-2'>
+						<label key={col} className='flex items-center gap-2 cursor-pointer'>
 							<input
 								type='checkbox'
 								checked={localSelection.includes(col)}
 								onChange={() => toggleColumn(col)}
-								className='accent-sky-400'
+								className='accent-sky-600'
 							/>
 							{col.replaceAll('_', ' ')}
 						</label>
 					))}
 				</div>
-				<div className='flex justify-between'>
+				<div className='flex justify-between gap-5'>
 					<button
 						type='button'
 						onClick={selectAll}
-						className='px-3 py-1 rounded bg-slate-600'
+						className='px-3 py-1 duration-500 rounded cursor-pointer bg-slate-600 hover:bg-slate-400'
 					>
 						Select All
 					</button>
 					<button
 						type='button'
 						onClick={deselectAll}
-						className='px-3 py-1 rounded bg-slate-600'
+						className='px-3 py-1 duration-500 rounded cursor-pointer bg-slate-600 hover:bg-slate-400'
 					>
 						Deselect All
 					</button>
@@ -66,13 +84,14 @@ const ColumnsModal: React.FC<ColumnsModalProps> = ({
 							onApply(localSelection);
 							onClose();
 						}}
-						className='px-3 py-1 rounded bg-sky-500'
+						className='px-3 py-1 duration-500 rounded cursor-pointer bg-sky-600 hover:bg-sky-400'
 					>
 						Apply
 					</button>
 				</div>
 			</div>
-		</div>
+		</div>,
+		document.body
 	);
 };
 

@@ -1,4 +1,5 @@
 import type { Country } from '../types';
+import { DEFAULT_COLUMNS } from '../constants';
 import { memo, useMemo, useState, useEffect } from 'react';
 
 interface CountriesTableProps {
@@ -6,8 +7,6 @@ interface CountriesTableProps {
 	selectedYear: number | null;
 	visibleColumns?: string[];
 }
-
-const DEFAULT_COLUMNS = ['name', 'iso_code', 'year', 'population', 'co2', 'co2_per_capita'];
 
 const CountriesTable: React.FC<CountriesTableProps> = ({
 	countries,
