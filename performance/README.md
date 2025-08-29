@@ -19,8 +19,8 @@ This document shows how to profile and compare the performance of the CO2 Countr
     - **Ranked Chart**
 
 **Screenshots example:**
-![Flame Graph Before Optimization](./screenshots/flame-before.png)
-![Ranked Chart Before Optimization](./screenshots/ranked-before.png)
+![Flame Graph Before Optimization](screenshots/flame-before.png)
+![Ranked Chart Before Optimization](screenshots/ranked-before.png)
 
 ---
 
@@ -42,8 +42,8 @@ This document shows how to profile and compare the performance of the CO2 Countr
     - Observe if unnecessary re-renders are reduced.
 
 **Screenshots example:**
-![Flame Graph After Optimization](./screenshots/flame-after.png)
-![Ranked Chart After Optimization](./screenshots/ranked-after.png)
+![Flame Graph After Optimization](screenshots/flame-after.png)
+![Ranked Chart After Optimization](screenshots/ranked-after.png)
 
 **Conclusion:**
 
