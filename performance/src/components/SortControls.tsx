@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface SortControlsProps {
 	sortBy: 'name' | 'population';
 	sortOrder: 'asc' | 'desc';
@@ -32,4 +34,4 @@ const SortControls: React.FC<SortControlsProps> = ({ sortBy, sortOrder, onSortCh
 	</div>
 );
 
-export default SortControls;
+export default memo(SortControls);

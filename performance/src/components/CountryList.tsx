@@ -1,6 +1,6 @@
 import type { Country, YearData } from '../types';
-import { EXTRA_COLUMNS_TOP5 } from '../constants'
-import { use, useMemo, useState } from 'react';
+import { EXTRA_COLUMNS_TOP5 } from '../constants';
+import { use, useMemo, useState, useCallback } from 'react';
 import CountriesTable from './CountriesTable';
 import YearSelector from './YearSelector';
 import RegionFilter from './RegionFilter';
@@ -14,8 +14,14 @@ interface CountryListProps {
 
 const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 	const countries = use(countriesResource);
+
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
+	const [selectedYear, setSelectedYear] = useState<number>(0);
+	const [selectedRegion, setSelectedRegion] = useState<string>('');
+	const [searchQuery, setSearchQuery] = useState<string>('');
+	const [sortBy, setSortBy] = useState<'name' | 'population'>('name');
+	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
 	const years = useMemo(() => {
 		const setYears = new Set<number>();
@@ -23,17 +29,46 @@ const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 		return Array.from(setYears).sort((a, b) => a - b);
 	}, [countries]);
 
-	const [selectedYear, setSelectedYear] = useState<number>(years[years.length - 1] ?? 0);
-	const [selectedRegion, setSelectedRegion] = useState<string>('');
-	const [searchQuery, setSearchQuery] = useState<string>('');
-	const [sortBy, setSortBy] = useState<'name' | 'population'>('name');
-	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+	useMemo(() => {
+		if (years.length > 0 && !selectedYear) {
+			setSelectedYear(years[years.length - 1]);
+		}
+	}, [years, selectedYear]);
 
 	const regions = useMemo(() => {
 		const setRegions = new Set<string>();
 		countries.forEach((c) => c.name && setRegions.add(c.name));
 		return Array.from(setRegions).sort();
 	}, [countries]);
+
+	const handleYearChange = useCallback((year: number) => {
+		setSelectedYear(year);
+	}, []);
+
+	const handleRegionChange = useCallback((region: string) => {
+		setSelectedRegion(region);
+	}, []);
+
+	const handleSearchChange = useCallback((query: string) => {
+		setSearchQuery(query);
+	}, []);
+
+	const handleSortChange = useCallback((sb: 'name' | 'population', so: 'asc' | 'desc') => {
+		setSortBy(sb);
+		setSortOrder(so);
+	}, []);
+
+	const handleOpenModal = useCallback(() => {
+		setIsModalOpen(true);
+	}, []);
+
+	const handleCloseModal = useCallback(() => {
+		setIsModalOpen(false);
+	}, []);
+
+	const handleApplyColumns = useCallback((cols: string[]) => {
+		setSelectedColumns(cols);
+	}, []);
 
 	const filtered = useMemo(() => {
 		return countries.filter((c) => {
@@ -74,26 +109,23 @@ const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 				<YearSelector
 					years={years}
 					selectedYear={selectedYear}
-					onChange={setSelectedYear}
+					onChange={handleYearChange}
 				/>
 				<RegionFilter
 					regions={regions}
 					selectedRegion={selectedRegion}
-					onChange={setSelectedRegion}
+					onChange={handleRegionChange}
 				/>
-				<SearchBar query={searchQuery} onChange={setSearchQuery} />
+				<SearchBar query={searchQuery} onChange={handleSearchChange} />
 				<SortControls
 					sortBy={sortBy}
 					sortOrder={sortOrder}
-					onSortChange={(sb, so) => {
-						setSortBy(sb);
-						setSortOrder(so);
-					}}
+					onSortChange={handleSortChange}
 				/>
 				<button
 					type='button'
 					className='px-3 py-2 text-white duration-500 rounded cursor-pointer bg-slate-700 hover:bg-slate-600'
-					onClick={() => setIsModalOpen(true)}
+					onClick={handleOpenModal}
 				>
 					Extra Columns ⚙️
 				</button>
@@ -107,10 +139,10 @@ const CountryList: React.FC<CountryListProps> = ({ countriesResource }) => {
 				/>
 				<ColumnsModal
 					isOpen={isModalOpen}
-					availableColumns={EXTRA_COLUMNS_TOP5}  
+					availableColumns={EXTRA_COLUMNS_TOP5}
 					selectedColumns={selectedColumns}
-					onClose={() => setIsModalOpen(false)}
-					onApply={setSelectedColumns}
+					onClose={handleCloseModal}
+					onApply={handleApplyColumns}
 				/>
 			</div>
 		</div>

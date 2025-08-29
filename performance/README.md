@@ -1,69 +1,51 @@
-# React + TypeScript + Vite
+# CO2 Countries App Performance Profiling
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This document shows how to profile and compare the performance of the CO2 Countries App before and after React optimizations (useMemo, useCallback, React.memo).
 
-Currently, two official plugins are available:
+---
 
--   [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
--   [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## **Step 1: Initial Profiling (Without Optimizations)**
 
-## Expanding the ESLint configuration
+1. Open the app in Chrome.
+2. Open React DevTools → Profiler tab.
+3. Start profiling **after the page has fully loaded**.
+4. Interact with the app:
+    - Sort columns (by name and population)
+    - Search for a country
+    - Change selected year
+    - Apply/remove extra columns
+5. Stop profiling and take screenshots of:
+    - **Flame Graph**
+    - **Ranked Chart**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Screenshots example:**
+![Flame Graph Before Optimization](./screenshots/flame-before.png)
+![Ranked Chart Before Optimization](./screenshots/ranked-before.png)
 
-```js
-export default tseslint.config([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			// Other configs...
+---
 
-			// Remove tseslint.configs.recommended and replace with this
-			...tseslint.configs.recommendedTypeChecked,
-			// Alternatively, use this for stricter rules
-			...tseslint.configs.strictTypeChecked,
-			// Optionally, add this for stylistic rules
-			...tseslint.configs.stylisticTypeChecked,
+## **Step 2: Optimizations**
 
-			// Other configs...
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ['./tsconfig.node.json', './tsconfig.app.json'],
-				tsconfigRootDir: import.meta.dirname,
-			},
-			// other options...
-		},
-	},
-]);
-```
+1. Use `React.memo` for components like `CountriesTable`.
+2. Use `useMemo` to memoize derived data (`filtered`, `sorted`, `sortedFilteredData`).
+3. Use `useCallback` to memoize event handlers.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+## **Step 3: Profiling After Optimizations**
 
-export default tseslint.config([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			// Other configs...
-			// Enable lint rules for React
-			reactX.configs['recommended-typescript'],
-			// Enable lint rules for React DOM
-			reactDom.configs.recommended,
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ['./tsconfig.node.json', './tsconfig.app.json'],
-				tsconfigRootDir: import.meta.dirname,
-			},
-			// other options...
-		},
-	},
-]);
-```
+1. Repeat **Step 1** actions on the optimized app.
+2. Take screenshots of **Flame Graph** and **Ranked Chart** again.
+3. Compare results:
+    - Check if **Commit Duration** decreased.
+    - Check if **Render Duration** for heavy components decreased.
+    - Observe if unnecessary re-renders are reduced.
+
+**Screenshots example:**
+![Flame Graph After Optimization](./screenshots/flame-after.png)
+![Ranked Chart After Optimization](./screenshots/ranked-after.png)
+
+**Conclusion:**
+
+-   Optimizations should reduce render times and unnecessary re-renders.
+-   Flame Graph becomes shorter, and Ranked Chart shows fewer slow components.

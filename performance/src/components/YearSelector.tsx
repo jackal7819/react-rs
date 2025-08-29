@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface YearSelectorProps {
 	years: number[];
 	selectedYear: number;
@@ -21,4 +23,4 @@ const YearSelector: React.FC<YearSelectorProps> = ({ years, selectedYear, onChan
 	</select>
 );
 
-export default YearSelector;
+export default memo(YearSelector);

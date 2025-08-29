@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface RegionFilterProps {
 	regions: string[];
 	selectedRegion: string;
@@ -22,4 +24,4 @@ const RegionFilter: React.FC<RegionFilterProps> = ({ regions, selectedRegion, on
 	</select>
 );
 
-export default RegionFilter;
+export default memo(RegionFilter);
